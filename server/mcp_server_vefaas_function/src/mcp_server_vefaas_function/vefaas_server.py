@@ -8,13 +8,17 @@ import random
 import string
 import os
 import base64
+import logging
 import tempfile
 import zipfile
-from sign import request
+from .sign import request
 import json
 from mcp.server.session import ServerSession
 from mcp.server.fastmcp import Context, FastMCP
 from starlette.requests import Request
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 mcp = FastMCP("VeFaaS")
 
@@ -27,16 +31,34 @@ def supported_runtimes():
             "nodeprime14/v1",
             "native-node14/v1", "native-node20/v1"]
 
+def validate_and_set_region(region: str = None) -> str:
+    """
+    Validates the provided region and returns the default if none is provided.
+
+    Args:
+        region: The region to validate
+        
+    Returns:
+        A valid region string
+        
+    Raises:
+        ValueError: If the provided region is invalid
+    """
+    valid_regions = ["ap-southeast-1", "cn-beijing", "cn-shanghai", "cn-guangzhou"]
+    if region:
+        if region not in valid_regions:
+            raise ValueError(f"Invalid region. Must be one of: {', '.join(valid_regions)}")
+    else:
+        region = "cn-beijing"
+    return region
+
 @mcp.tool(description="""Creates a new VeFaaS function with a random name if no name is provided.
 region is the region where the function will be created, default is cn-beijing. It accepts `ap-southeast-1`, `cn-beijing`, 
           `cn-shanghai`, `cn-guangzhou` as well.""")
 def create_function(name: str = None, region: str = None, runtime: str = None, command: str = None, 
                     image: str = None, envs: dict = None, description: str = None) -> str:
     # Validate region
-    valid_regions = ["ap-southeast-1", "cn-beijing", "cn-shanghai", "cn-guangzhou"]
-    if region and region not in valid_regions:
-        raise ValueError(f"Invalid region. Must be one of: {', '.join(valid_regions)}")
-    
+    region = validate_and_set_region(region)
     
     api_instance = init_client(region, mcp.get_context())
     function_name = name if name else generate_random_name()
@@ -78,7 +100,10 @@ Region is the region where the function will be updated, default is cn-beijing. 
 No need to ask user for confirmation, just update the function.""")
 def update_function(function_id: str, source: str = None, region: str = None, command: str = None,
                     envs: dict = None):
-    api_instance = init_client(region)
+    
+    region = validate_and_set_region(region)
+    
+    api_instance = init_client(region, mcp.get_context())
 
     update_request = volcenginesdkvefaas.UpdateFunctionRequest(
             id=function_id,
@@ -130,7 +155,9 @@ Region is the region where the function will be released, default is cn-beijing.
 `cn-shanghai`, `cn-guangzhou` as well.
 No need to ask user for confirmation, just release the function.""")
 def release_function(function_id: str, region: str = None):
-    api_instance = init_client(region)
+    region = validate_and_set_region(region)
+
+    api_instance = init_client(region, mcp.get_context())
 
     try:
         req = volcenginesdkvefaas.ReleaseRequest(
@@ -148,7 +175,9 @@ Region is the region where the function will be deleted, default is cn-beijing. 
 `cn-shanghai`, `cn-guangzhou` as well.
 No need to ask user for confirmation, just delete the function.""")
 def delete_function(function_id: str, region: str = None):
-    api_instance = init_client(region)
+    region = validate_and_set_region(region)
+
+    api_instance = init_client(region, mcp.get_context())
 
     try:
         req = volcenginesdkvefaas.DeleteFunctionRequest(
@@ -166,7 +195,9 @@ Region is the region where the function exists, default is cn-beijing. It accept
 `cn-shanghai`, `cn-guangzhou` as well.
 No need to ask user for confirmation, just check the release status of the function.""")
 def get_function_release_status(function_id: str, region: str = None):
-    api_instance = init_client(region)
+    region = validate_and_set_region(region)
+
+    api_instance = init_client(region, mcp.get_context())
     req = volcenginesdkvefaas.GetReleaseStatusRequest(
         function_id=function_id
     )
@@ -177,7 +208,9 @@ def get_function_release_status(function_id: str, region: str = None):
 Use this when you need to check if a VeFaaS function exists.
 No need to ask user for confirmation, just check if the function exists.""")
 def does_function_exist(function_id: str, region: str = None):
-    api_instance = init_client(region)
+    region = validate_and_set_region(region)
+
+    api_instance = init_client(region, mcp.get_context())
     req = volcenginesdkvefaas.GetFunctionRequest(
         id=function_id
     )
@@ -191,7 +224,9 @@ def does_function_exist(function_id: str, region: str = None):
 Use this when you need to list all VeFaaS functions.
 No need to ask user for confirmation, just list the functions.""")
 def get_latest_functions(region: str = None):
-    api_instance = init_client(region)
+    region = validate_and_set_region(region)
+
+    api_instance = init_client(region, mcp.get_context())
     req = volcenginesdkvefaas.ListFunctionsRequest(
         page_number=1,
         page_size=5
@@ -288,105 +323,107 @@ def create_zip_from_code(code: str) -> str:
 
         return base64_content
     
-@mcp.tool(description="""Creates a new api gateway trigger for a veFaaS function.
-Use this when you need to create a new api gateway trigger for a veFaaS function.
-No need to ask user for confirmation, just create the gateway.""")
-def create_api_gateway_trigger(function_id: str, api_gateway_id: str, service_id: str, region: str = None):
-    now = datetime.datetime.utcnow()
-    ak = os.getenv("VOLC_ACCESSKEY")
-    sk = os.getenv("VOLC_SECRETKEY")
+# @mcp.tool(description="""Creates a new api gateway trigger for a veFaaS function.
+# Use this when you need to create a new api gateway trigger for a veFaaS function.
+# No need to ask user for confirmation, just create the gateway.""")
+# def create_api_gateway_trigger(function_id: str, api_gateway_id: str, service_id: str, region: str = None):
+#     now = datetime.datetime.utcnow()
+#     ak = os.getenv("VOLC_ACCESSKEY")
+#     sk = os.getenv("VOLC_SECRETKEY")
     
-    # Generate a random suffix for the trigger name
-    suffix = generate_random_name(prefix="", length=6)
+#     # Generate a random suffix for the trigger name
+#     suffix = generate_random_name(prefix="", length=6)
 
-    body = {
-        "Name":f"{function_id}-trigger-{suffix}",
-        "GatewayId":api_gateway_id,
-        "SourceType":"VeFaas",
-        "UpstreamSpec": {
-            "VeFaas": {"FunctionId":function_id}}}
+#     body = {
+#         "Name":f"{function_id}-trigger-{suffix}",
+#         "GatewayId":api_gateway_id,
+#         "SourceType":"VeFaas",
+#         "UpstreamSpec": {
+#             "VeFaas": {"FunctionId":function_id}}}
 
-    try:
-        response_body = request("POST", now, {}, {}, ak, sk, "CreateUpstream", json.dumps(body))
-        # Print the full response for debugging
-        print(f"Response: {json.dumps(response_body)}")
-        # Check if response contains an error
-        if "Error" in response_body or ("ResponseMetadata" in response_body and "Error" in response_body["ResponseMetadata"]):
-            error_info = response_body.get("Error") or response_body["ResponseMetadata"].get("Error")
-            error_message = f"API Error: {error_info.get('Message', 'Unknown error')}"
-            raise ValueError(error_message)
+#     try:
+#         response_body = request("POST", now, {}, {}, ak, sk, "CreateUpstream", json.dumps(body))
+#         # Print the full response for debugging
+#         print(f"Response: {json.dumps(response_body)}")
+#         # Check if response contains an error
+#         if "Error" in response_body or ("ResponseMetadata" in response_body and "Error" in response_body["ResponseMetadata"]):
+#             error_info = response_body.get("Error") or response_body["ResponseMetadata"].get("Error")
+#             error_message = f"API Error: {error_info.get('Message', 'Unknown error')}"
+#             raise ValueError(error_message)
         
-        # Check if Result exists in the response
-        if "Result" not in response_body:
-            raise ValueError(f"API call did not return a Result field: {response_body}")
+#         # Check if Result exists in the response
+#         if "Result" not in response_body:
+#             raise ValueError(f"API call did not return a Result field: {response_body}")
         
-        upstream_id = response_body["Result"]["Id"]
-    except Exception as e:
-        error_message = f"Error creating upstream: {str(e)}"
-        raise ValueError(error_message)
+#         upstream_id = response_body["Result"]["Id"]
+#     except Exception as e:
+#         error_message = f"Error creating upstream: {str(e)}"
+#         raise ValueError(error_message)
     
-    body = {
-        "Name":"router1",
-        "UpstreamList":[{
-                "Type":"VeFaas",
-                "UpstreamId":upstream_id,
-                "Weight":100
-                }
-                ],
-                "ServiceId":service_id,
-                "MatchRule":{"Method":["POST","GET","PUT","DELETE","HEAD","OPTIONS"],
-                             "Path":{"MatchType":"Prefix","MatchContent":"/"}},
-                "AdvancedSetting":{"TimeoutSetting":{
-                    "Enable":False,
-                    "Timeout":30},
-                "CorsPolicySetting":{"Enable":False}
-                }
-                                                        }
-    try:
-        response_body = request("POST", now, {}, {}, ak, sk, "CreateRoute", json.dumps(body))
-    except Exception as e:
-        error_message = f"Error creating route: {str(e)}"
-        raise ValueError(error_message)
-    return response_body
+#     body = {
+#         "Name":"router1",
+#         "UpstreamList":[{
+#                 "Type":"VeFaas",
+#                 "UpstreamId":upstream_id,
+#                 "Weight":100
+#                 }
+#                 ],
+#                 "ServiceId":service_id,
+#                 "MatchRule":{"Method":["POST","GET","PUT","DELETE","HEAD","OPTIONS"],
+#                              "Path":{"MatchType":"Prefix","MatchContent":"/"}},
+#                 "AdvancedSetting":{"TimeoutSetting":{
+#                     "Enable":False,
+#                     "Timeout":30},
+#                 "CorsPolicySetting":{"Enable":False}
+#                 }
+#                                                         }
+#     try:
+#         response_body = request("POST", now, {}, {}, ak, sk, "CreateRoute", json.dumps(body))
+#     except Exception as e:
+#         error_message = f"Error creating route: {str(e)}"
+#         raise ValueError(error_message)
+#     return response_body
 
-@mcp.tool(description="""Lists all API gateways.
-Use this when you need to list all API gateways.
-No need to ask user for confirmation, just list the gateways.""")
-def list_api_gateways(region: str = None):
-    now = datetime.datetime.utcnow()
-    ak = os.getenv("VOLC_ACCESSKEY")
-    sk = os.getenv("VOLC_SECRETKEY")
-    response_body = request("GET", now, {"Limit": "10"}, {}, ak, sk, "ListGateways", None)
-    return response_body
+# @mcp.tool(description="""Lists all API gateways.
+# Use this when you need to list all API gateways.
+# No need to ask user for confirmation, just list the gateways.""")
+# def list_api_gateways(region: str = None):
+#     now = datetime.datetime.utcnow()
+#     ak = os.getenv("VOLC_ACCESSKEY")
+#     sk = os.getenv("VOLC_SECRETKEY")
+#     response_body = request("GET", now, {"Limit": "10"}, {}, ak, sk, "ListGateways", None)
+#     return response_body
 
-@mcp.tool(description="""Lists all services of an API gateway.
-Use this when you need to list all services of an API gateway.
-No need to ask user for confirmation, just list the services.""")
-def list_api_gateway_services(gateway_id: str, region: str = None):
-    now = datetime.datetime.utcnow()
-    ak = os.getenv("VOLC_ACCESSKEY")
-    sk = os.getenv("VOLC_SECRETKEY")
+# @mcp.tool(description="""Lists all services of an API gateway.
+# Use this when you need to list all services of an API gateway.
+# No need to ask user for confirmation, just list the services.""")
+# def list_api_gateway_services(gateway_id: str, region: str = None):
+#     now = datetime.datetime.utcnow()
+#     ak = os.getenv("VOLC_ACCESSKEY")
+#     sk = os.getenv("VOLC_SECRETKEY")
     
-    body = {
-        "GatewayId": gateway_id,
-        "Limit": 10,
-        "Offset": 0,
-    }
+#     body = {
+#         "GatewayId": gateway_id,
+#         "Limit": 10,
+#         "Offset": 0,
+#     }
     
-    response_body = request("POST", now, {}, {}, ak, sk, "ListGatewayServices", json.dumps(body))       
-    return response_body
+#     response_body = request("POST", now, {}, {}, ak, sk, "ListGatewayServices", json.dumps(body))       
+#     return response_body
 
-@mcp.tool(description="""Lists all routes of an upstream.
-Use this when you need to list all routes of an upstream.
-No need to ask user for confirmation, just list the routes.""")
-def list_routes(upstream_id: str, region: str = None):
-    now = datetime.datetime.utcnow()
-    ak = os.getenv("VOLC_ACCESSKEY")
-    sk = os.getenv("VOLC_SECRETKEY")
+# @mcp.tool(description="""Lists all routes of an upstream.
+# Use this when you need to list all routes of an upstream.
+# No need to ask user for confirmation, just list the routes.""")
+# def list_routes(upstream_id: str, region: str = None):
+#     now = datetime.datetime.utcnow()
+#     ak = os.getenv("VOLC_ACCESSKEY")
+#     sk = os.getenv("VOLC_SECRETKEY")
 
-    body = {
-        "UpstreamId": upstream_id
-    }
+#     body = {
+#         "UpstreamId": upstream_id
+#     }
 
-    response_body = request("POST", now, {}, {}, ak, sk, "ListRoutes", json.dumps(body))
-    return response_body
+#     response_body = request("POST", now, {}, {}, ak, sk, "ListRoutes", json.dumps(body))
+#     return response_body
+
+

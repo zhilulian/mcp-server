@@ -54,10 +54,10 @@ mcp = FastMCP(MCP_SERVER_NAME, port=int(os.getenv("PORT", "8000")))
 # Global variables
 client = None
 
-@mcp.tool(name="send_command_to_instance",description="""send commands to be executed on the specified instance.
+@mcp.tool(name="run_command",description="""send commands to be executed on the specified instance.
 Region is the region where the instance exists, default is cn-beijing. It accepts `ap-southeast-1`, `cn-beijing`, 
 `cn-shanghai`, `cn-guangzhou` as well.""")
-async def send_command_to_instance(instance: str, region: str, command_content: str) -> str:
+async def run_command(instance: str, region: str, command_content: str) -> str:
     """Send commands to the target instance,
         generate an execution record, wait until the execution is completed,
         and then retrieve and return the execution results.

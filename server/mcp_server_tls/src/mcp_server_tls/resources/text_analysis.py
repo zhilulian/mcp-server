@@ -3,19 +3,19 @@ import logging
 import httpx
 
 from typing import Optional
-from mcp_server_tls.resources.tls import TlsResource
 from volcengine.tls.tls_exception import TLSException
+from mcp_server_tls.consts import *
+from mcp_server_tls.reqeust import custom_api_call, custom_api_sse_call
 
 logger = logging.getLogger(__name__)
 
-class TlsTextAnalysisResource(TlsResource):
-    """
-        火山引擎日志管理资源类
-    """
-    def create_app_instance(self, instance_name: str, instance_type: str, description: Optional[str] = None) -> dict:
-        """
-        创建app实例
-        """
+async def create_app_instance_resource(
+        auth_info: dict,
+        instance_name: str,
+        instance_type: str,
+        description: Optional[str] = None,
+) -> dict:
+    try:
         body = {
             "InstanceName": instance_name,
             "InstanceType": instance_type,
@@ -24,13 +24,26 @@ class TlsTextAnalysisResource(TlsResource):
         if description is not None:
             body["Description"] = description
 
-        return self.custom_api_call("/CreateAppInstance", body=body)
+        return custom_api_call(
+            auth_info=auth_info,
+            api=API_CREATE_APP_INSTANCE,
+            body=body,
+        )
 
-    def describe_app_instances(self, instance_id: Optional[str]=None, instance_type: Optional[str]=None, instance_name: Optional[str]=None,
-                               description: Optional[str] = None, page_number: int = 1, page_size: int = 10) -> dict:
-        """
-        查询app实例
-        """
+    except TLSException as e:
+        logger.error("create_app_instance_resource")
+        raise e
+
+async def describe_app_instances_resource(
+        auth_info: dict,
+        instance_id: Optional[str]=None,
+        instance_type: Optional[str]=None,
+        instance_name: Optional[str]=None,
+        description: Optional[str] = None,
+        page_number: int = 1,
+        page_size: int = 10,
+) -> dict:
+    try:
         params = {
             "PageNumber": page_number,
             "PageSize": page_size,
@@ -48,32 +61,62 @@ class TlsTextAnalysisResource(TlsResource):
         if description is not None:
             params["Description"] = description
 
-        return self.custom_api_call("/DescribeAppInstances", params=params)
+        return custom_api_call(
+            auth_info=auth_info,
+            api=API_DESCRIBE_APP_INSTANCES,
+            params=params
+        )
 
-    def create_app_scene_meta(self, instance_id: str, app_meta_type: str,
-                              id: Optional[str] = None, record: Optional[dict] = None) -> dict:
-        """
-        创建ai会话
-        """
+    except TLSException as e:
+        logger.error("describe_app_instances_resource error")
+        raise e
+
+async def create_app_scene_meta_resource(
+        auth_info: dict,
+        instance_id: str,
+        app_meta_type: str,
+        topic_id: Optional[str] = None,
+        record: Optional[dict] = None,
+) -> dict:
+    try:
         body = {
             "InstanceId": instance_id,
             "CreateAPPMetaType": app_meta_type,
         }
 
-        if id is not None:
-            body["Id"] = id
+        if topic_id is not None:
+            body["Id"] = topic_id
 
         if record is not None:
             body["Record"] = record
 
-        return self.custom_api_call("/CreateAppSceneMeta", body=body)
+        return custom_api_call(
+            auth_info=auth_info,
+            api=API_CREATE_APP_SCENE_META,
+            body=body
+        )
 
-    def describe_session_answer(self, instance_id: str, topic_id: str, session_id: str, question: str,
-                                       parent_message_id: Optional[str] = None, question_id: Optional[str] = None,
-                                       intent: Optional[int] = None) -> httpx.Response:
-        """
-        查询ai语句返回
-        """
+    except TLSException as e:
+        logger.error("create_app_scene_meta_resource error")
+        raise e
+
+async def describe_session_answer_resource(
+        auth_info: dict,
+        instance_id: str,
+        topic_id: str,
+        session_id: str,
+        question: str,
+        parent_message_id: Optional[str] = None,
+        question_id: Optional[str] = None,
+        intent: Optional[int] = None,
+) -> str:
+
+    answers = []
+    suggestions = []
+    data_prefix = "data:"
+
+    try:
+
         body = {
             "InstanceId": instance_id,
             "Question": question,
@@ -90,44 +133,11 @@ class TlsTextAnalysisResource(TlsResource):
         if intent is not None:
             body["Intent"] = intent
 
-        return self.custom_api_sse_call("/DescribeSessionAnswer", body=body)
-
-# 实例化资源
-test_analysis_resource = TlsTextAnalysisResource()
-
-async def create_app_instance_resource(instance_name: str, instance_type: str, description: Optional[str] = None) -> dict:
-    try:
-        result = test_analysis_resource.create_app_instance(instance_name, instance_type, description)
-        return result
-    except TLSException as e:
-        logger.error(f"create app instance error: {e}")
-        raise e
-
-async def describe_app_instances_resource(instance_name: str, instance_type: Optional[str] = None) -> dict:
-    try:
-        result = test_analysis_resource.describe_app_instances(instance_name=instance_name, instance_type=instance_type)
-        return result
-    except TLSException as e:
-        logger.error(f"Describe app instance error: {e}")
-        raise e
-
-async def create_app_scene_meta_resource(instance_id: str, app_meta_type: str, topic_id: Optional[str] = None, record: Optional[dict] = None) -> dict:
-    try:
-        result = test_analysis_resource.create_app_scene_meta(instance_id, app_meta_type, topic_id, record)
-        return result
-    except TLSException as e:
-        logger.error(f"Describe app instance error: {e}")
-        raise e
-
-async def describe_session_answer_resource(instance_id: str, topic_id: str, session_id: str, question: str,
-                                       parent_message_id: Optional[str] = None, question_id: Optional[str] = None,
-                                       intent: Optional[int] = None) -> str:
-    answers = []
-    suggestions = []
-    data_prefix = "data:"
-
-    try:
-        response_sse = await test_analysis_resource.describe_session_answer(instance_id, topic_id, session_id, question, parent_message_id, question_id, intent)
+        response_sse: httpx.Response = await custom_api_sse_call(
+            auth_info=auth_info,
+            api=API_DESCRIBE_SESSION_ANSWER,
+            body=body
+        )
 
         for line in response_sse.iter_lines():
             if not line.startswith(data_prefix):
@@ -136,13 +146,13 @@ async def describe_session_answer_resource(instance_id: str, topic_id: str, sess
             try:
                 data = json.loads(line.removeprefix(data_prefix).strip())
                 answer = data.get("Message", {}).get("Answer", "")
-                # 判断返回的回答类型
+
                 rsp_msg_type = data.get("RspMsgType", None)
                 match rsp_msg_type:
-                    # 推理
+                    # inference
                     case 2:
                         answers.append(answer)
-                    # 建议
+                    # suggestion
                     case 3:
                         suggestions = data.get("Suggestions", [])
                     case _:
@@ -151,6 +161,7 @@ async def describe_session_answer_resource(instance_id: str, topic_id: str, sess
                 logger.error(f"Describe seesion answer error, response json decode failed: {e}")
 
         return json.dumps({"answer": "".join(answers), "Suggestions": suggestions, "session_id": session_id}, ensure_ascii=False)
+
     except TLSException as e:
-        logger.error(f"Describe seesion answer error: {e}")
+        logger.error("describe_session_answer_resource error")
         raise e

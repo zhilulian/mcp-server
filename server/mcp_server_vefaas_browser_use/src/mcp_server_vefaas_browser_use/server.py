@@ -9,7 +9,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-mcp = FastMCP("VeFaaS")
+mcp = FastMCP("VeFaaS Browser Use")
 
 @mcp.tool(description="""Creates a browser use task which can automatically browse the web.
 Use this when you need to create a browser use task with specific messages.

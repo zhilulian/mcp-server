@@ -1,5 +1,7 @@
 # MCP Server 产品名称：veFaaS browser-use MCP Server
 
+![logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_8fc72d37e54a2b28d334112241dd84ca.png)
+
 ## 版本信息
 
 v0.0.1
@@ -84,8 +86,8 @@ OAuth 2.0
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/volcengine/mcp-server.git#subdirectory=server/mcp_server_vefaas_browser_use",
-        "vefaas-browser-use"
+        "git+https://github.com/volcengine/mcp-server#subdirectory=server/mcp_server_vefaas_browser_use",
+        "mcp-server-vefaas-browser-use"
       ],
       "env": {
         "BROWSER_USE_ENDPOINT": "https://xxxxxxxxxxx.apigateway-cn-beijing.volceapi.com"
@@ -97,4 +99,4 @@ OAuth 2.0
 
 ## License
 
-MIT
+volcengine/mcp-server is licensed under the MIT License.

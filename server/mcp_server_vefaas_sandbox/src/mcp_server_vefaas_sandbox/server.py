@@ -12,7 +12,6 @@ Sandbox_API_BASE = (
     "xxx.apigateway-cn-beijing.volceapi.com"  # 替换为用户沙盒服务地址
 )
 
-
 # send http reqeust to SandboxFusion run_code api
 def send_request(payload):
     headers = {
@@ -60,8 +59,9 @@ def send_request(payload):
     }
     return result
 
-
-def run_code(codeStr, language):
+@mcp.tool(description="""run your code str in sandbox server with your provided language,
+ support to set these languages: python、nodejs、go、bash、typescript、java、cpp、php、csharp、lua、R、 swift、scala、ruby""")
+def run_code(codeStr, language) -> str :
     payload = json.dumps(
         {
             "compile_timeout": 60,
@@ -72,26 +72,6 @@ def run_code(codeStr, language):
         }
     )
     return send_request(payload=payload)
-
-
-# 实现工具执行
-@mcp.tool(description="""run your bash code str in sandbox server""")
-def run_bash(bashStr) -> str:
-    """run a bash code"""
-    return run_code(bashStr, "bash")
-
-
-@mcp.tool(description="""run your python code str in sandbox server""")
-def run_python(pyCode) -> str:
-    """run a python code"""
-    return run_code(pyCode, "python")
-
-
-@mcp.tool(description="""run your nodejs code str in sandbox server""")
-def run_nodejs(nodejsCode) -> str:
-    """run a nodejs code"""
-    return run_code(nodejsCode, "nodejs")
-
 
 def main():
     """Main entry point for the MCP server."""

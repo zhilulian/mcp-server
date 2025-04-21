@@ -1,19 +1,19 @@
-# VeDB MySQL MCP Server
+# veDB MySQL MCP Server
 
-This MCP server provides a tool to interact with the VolcEngine VeDB MySQL Service, allowing you to search and retrieve knowledge from your collections.
+This MCP server provides a tool to interact with the VolcEngine veDB MySQL Service, allowing you to search and retrieve knowledge from your collections.
 
 ## Features
 
 - list_vedb_mysql_instances
-> Retrieve a list of all VeDB MySQL instances for the user, including a batch of instance IDs and basic information
+> Retrieve a list of all veDB MySQL instances for the user, including a batch of instance IDs and basic information
 - describe_vedb_mysql_detail
-> Retrieve detailed information about a specific VeDB MySQL instance
+> Retrieve detailed information about a specific veDB MySQL instance
 - list_vedb_mysql_instance_databases
-> Retrieve a list of databases created in a specific VeDB MySQL instance, including privileges info
+> Retrieve a list of databases created in a specific veDB MySQL instance, including privileges info
 - list_vedb_mysql_instance_accounts
-> Obtain a list of accounts in a single VeDB MySQL instance, with their privilege details
+> Obtain a list of accounts in a single veDB MySQL instance, with their privilege details
 - modify_vedb_mysql_instance_alias
-> Modify a specific VeDB MySQL instance's alias
+> Modify a specific veDB MySQL instance's alias
 
 ## Setup
 
@@ -71,7 +71,7 @@ To add this server to your MCP configuration, add the following to your MCP sett
 ```json
 {
    "mcpServers": {
-      "vedb_mysql": {
+      "veDB_mysql": {
          "command": "uvx",
          "args": [
             "--from",
@@ -123,4 +123,4 @@ Please ensure your code follows the project's coding standards and includes appr
 
 ## License
 
-This project is licensed under the terms specified by VolcEngine.
+volcengine/mcp-server is licensed under the [MIT License](https://github.com/volcengine/mcp-server/blob/main/LICENSE).

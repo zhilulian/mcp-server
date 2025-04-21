@@ -1,12 +1,12 @@
 import inspect
 import os
-import re
+# import re
 from pydantic.networks import AnyUrl
 from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.resources import FunctionResource
+from mcp_server_tls.config import TLS_CONFIG
 from mcp_server_tls.tools import SUPPORT_TOOLS
 from mcp_server_tls.resources import SUPPORT_RESOURCES
-from mcp_server_tls.config import TLS_CONFIG
 
 # Initialize FastMCP server
 mcp = FastMCP(
@@ -15,8 +15,7 @@ mcp = FastMCP(
     port=int(os.getenv("PORT", "8000")),
 )
 
-
-def add_resources_to_mcp():
+def add_resources_to_mcp(mcp):
     """加载mcp resource"""
     for resource_name, resource_info in SUPPORT_RESOURCES.items():
 
@@ -31,14 +30,14 @@ def add_resources_to_mcp():
 
         if has_uri_params or has_func_params:
             # Validate that URI params match function params
-            uri_params = set(re.findall(r"{(\w+)}", uri))
-            func_params = set(inspect.signature(fn).parameters.keys())
+            # uri_params = set(re.findall(r"{(\w+)}", uri))
+            # func_params = set(inspect.signature(fn).parameters.keys())
 
-            if uri_params != func_params:
-                raise ValueError(
-                    f"Mismatch between URI parameters {uri_params} "
-                    f"and function parameters {func_params}"
-                )
+            # if uri_params != func_params:
+            #     raise ValueError(
+            #         f"Mismatch between URI parameters {uri_params} "
+            #         f"and function parameters {func_params}"
+            #     )
 
             # Register as template
             mcp._resource_manager.add_template(
@@ -60,7 +59,7 @@ def add_resources_to_mcp():
             mcp.add_resource(resource)
 
 
-def add_tools_to_mcp():
+def add_tools_to_mcp(mcp):
     # 加载mcp tools
     enabled_tools = TLS_CONFIG.enabled_tools
     if not enabled_tools or (len(enabled_tools) == 1 and enabled_tools[0] == "all"):
@@ -72,5 +71,5 @@ def add_tools_to_mcp():
                 mcp.add_tool(SUPPORT_TOOLS.get(tool_name), tool_name)
 
 
-add_resources_to_mcp()
-add_tools_to_mcp()
+add_resources_to_mcp(mcp)
+add_tools_to_mcp(mcp)

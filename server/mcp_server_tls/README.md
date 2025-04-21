@@ -1,313 +1,389 @@
-# MCP Server 产品名称： mcp-server-tls
+# TLS MCP Server
 
-![产品Logo](./static/image/logo.svg)
+The official MCP Server for the logging service can accurately convert natural language into log analysis statements, enabling efficient log analysis. It is easy to use, quick to get started, and suitable for scenarios such as operations troubleshooting and data analysis, unlocking the unlimited potential of the logging service for you.
 
-## 版本信息
-
-V0.1.0
-
-## 产品描述
-
-### 短描述
-
-自然语言驱动日志分析新体验
-
-### 长描述
-
-日志服务官方推出的 MCP Server，可以将自然语言精准转化为日志分析语句，高效分析日志。操作便捷，上手快，适用于运维排查、数据分析等场景，为你轻松解锁日志服务的无限可能
-
-## 分类
-
-云基础-存储
-
-## 标签
-
-日志，可观测，数据飞轮
+| Version | v0.1.0 |
+| :-: | :-: |
+| Description | A new experience of natural language-driven log analysis |
+| Category | Cloud Basics - Storage |
+| Tags | Logs, Observability, Data Flywheel |
 
 ## Tools
 
-本 MCP Server 产品提供以下 Tools (工具/能力):
-
 ### Tool 1: search_logs_v2_tool
 
-#### 类型
+This tool allows you to search logs using various query types, including full-text search, key-value search, and SQL queries. It provides flexible time range filtering and limit options to customize search results. The default time range is 15 minutes.
 
-SaaS
+- Required input parameters for debugging:
 
-#### 详细描述
-
-该工具允许您使用多种查询类型搜索日志，包括全文检索、键值搜索和SQL查询。它提供灵活的时间范围过滤和限制选项来定制搜索结果,默认时间为15分钟。
-
-#### 调试所需的输入参数:
-
-输入：
+`Input`
 
 ```json
 {
-  "inputSchema": {
-    "type": "object",
-    "required": ["query"],
-    "properties": {
-      "query": {
-        "type": "string",
-        "description": "日志查询语句"
-      },
-      "topic_id": {
-        "type": "string",
-        "description": "可选的日志主题ID, 默认为环境变量中设置的topic_id,如果没有设置,则必传"
-      },
-      "start_time": {
-        "type": "integer",
-        "description": "查询起始时间，Unix 时间戳（秒/毫秒）"
-      },
-      "end_time": {
-        "type": "integer",
-        "description": "查询结束时间，Unix 时间戳（秒/毫秒）"
-      },
-      "limit": {
-        "type": "integer",
-        "description": "返回的最大日志条数，默认值为 10"
-      }
-    }
-  },
-  "name": "search_logs_v2",
-  "description": "根据日志查询语句，在指定日志主题和时间范围内查询日志"
+    "inputSchema": {
+        "type": "object",
+        "required": ["query"],
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "Log query statement"
+            },
+            "topic_id": {
+                "type": "string",
+                "description": "Optional log topic ID. Defaults to the topic_id set in the environment variable. If not set, this is required."
+            },
+            "start_time": {
+                "type": "integer",
+                "description": "Query start time, Unix timestamp (seconds/milliseconds)"
+            },
+            "end_time": {
+                "type": "integer",
+                "description": "Query end time, Unix timestamp (seconds/milliseconds)"
+            },
+            "limit": {
+                "type": "integer",
+                "description": "Maximum number of logs to return, default is 10"
+            }
+        }
+    },
+    "name": "search_logs_v2",
+    "description": "Query logs within a specified log topic and time range based on a log query statement"
 }
-
 ```
 
-输出：
-    - [参考文档](https://www.volcengine.com/docs/6470/112195)
+`Output`
+- [Reference Documentation](https://www.volcengine.com/docs/6470/112195)
 
-#### 最容易被唤起的 Prompt示例
+```json
+{
+    "result_status": "complete",
+    "hit_count": 1,
+    "list_over": false,
+    "analysis": false,
+    "count": 1,
+    "limit": 10,
+    "context": "",
+    "logs": [
+        {
+            "__container_ip__": "127.0.0.1",
+            "__container_name__": "tls container name",
+            "__content__": "log content",
+            "__context_flow__": "",
+            "__image_name__": "image name",
+            "__namespace__": "namespace",
+            "__package_offset__": "package offset",
+            "__path__": "your log path",
+            "__pod_name__": "tls pod name",
+            "__pod_uid__": "tls pod uid",
+            "__source__": "your ip",
+            "__tag____client_ip__": "client ip",
+            "__tag____receive_time__": "log receive time",
+            "__time__": 1745029622660
+        }
+    ],
+    "analysis_result": {
+        "analysis_schema": [],
+        "analysis_type": {},
+        "analysis_data": []
+    },
+    "elapsed_millisecond": 666
+}
+```
 
-使用search_logs_v2_tool工具帮我查询下query为"__content__: error"的前十条日志
+- Example of the most easily triggered prompt:
+
+Use the search_logs_v2_tool to query the top 10 logs with the query "__content__: error".
 
 ### Tool 2: text2sql
 
-#### 类型
+Converts user input queries into TLS-defined SQL query statements. If the query is ambiguous, further clarification may be requested.
 
-SaaS
+- Required input parameters for debugging:
 
-#### 详细描述
-
-将用户输入的查询语言转为TLS定义的SQL查询语句,如果查询语言比较模糊,可能会有询问.
-
-#### 调试所需的输入参数:
-
-输入：
+`Input`
 
 ```json
 {
-  "inputSchema": {
-    "type": "object",
-    "required": ["question"],
-    "properties": {
-      "question": {
-        "type": "string",
-        "description": "用户输入的查询语言"
-      },
-      "topic_id": {
-        "type": "string",
-        "description": "可选的日志主题ID, 默认为环境变量中设置的topic_id,如果没有设置,则必传"
-      },
-      "session_id": {
-        "type": "string",
-        "description": "可选的tls copilot的会话id"
-      },
-    }
-  },
-  "name": "text2sql",
-  "description": "将用户输入的查询语言转为TLS定义的SQL查询语句"
+    "inputSchema": {
+        "type": "object",
+        "required": ["question"],
+        "properties": {
+            "question": {
+                "type": "string",
+                "description": "User input query language"
+            },
+            "topic_id": {
+                "type": "string",
+                "description": "Optional log topic ID. Defaults to the topic_id set in the environment variable. If not set, this is required."
+            },
+            "session_id": {
+                "type": "string",
+                "description": "Optional session ID for TLS Copilot"
+            }
+        }
+    },
+    "name": "text2sql",
+    "description": "Converts user input queries into TLS-defined SQL query statements"
 }
-
 ```
 
-输出：
+`Output`
 
 ```json
 {
-    "answer": "ai给出的返回结果,包含推理过程",
-    "Suggestions": ["ai返回的建议,比如查询字段不明确时,可能给出询问"],
-    "session_id": "服务端返回的当前与tls copilot会话id"
+    "answer": "AI-generated response, including reasoning process",
+    "Suggestions": ["AI-generated suggestions, such as clarifications for ambiguous queries"],
+    "session_id": "Session ID returned by the server for the current TLS Copilot session"
 }
 ```
 
-#### 最容易被唤起的 Prompt示例
+- Example of the most easily triggered prompt:
 
-使用text2sql工具生成一个sql,用于查询__content__字段中包含error的日志数量
+Use the text2sql tool to generate an SQL query to count logs where the "__content__" field contains "error".
 
 ### Tool 3: describe_project_tool
 
-#### 类型
+Retrieve project information for a specified project ID under the current permissions.
 
-SaaS
+- Required input parameters for debugging:
 
-#### 详细描述
-
-获取当前权限下指定项目id下的项目信息
-
-#### 调试所需的输入参数:
-
-输入：
+`Input`
 
 ```json
 {
-  "inputSchema": {
-    "type": "object",
-    "required": [],
-    "properties": {
-      "project_id": {
-        "type": "string",
-        "description": "可选的日志项目ID, 默认为环境变量中设置的project_id,如果没有设置,则必传"
-      },
-    }
-  },
-  "name": "describe_project_tool",
-  "description": "获取当前权限下指定项目id下的项目信息"
+    "inputSchema": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "project_id": {
+                "type": "string",
+                "description": "Optional log project ID. Defaults to the project_id set in the environment variable. If not set, this is required."
+            }
+        }
+    },
+    "name": "describe_project_tool",
+    "description": "Retrieve project information for a specified project ID under the current permissions"
 }
 ```
 
-输出：
-    - [参考文档](https://www.volcengine.com/docs/6470/112178)
+`Output`
+- [Reference Documentation](https://www.volcengine.com/docs/6470/112178)
 
-#### 最容易被唤起的 Prompt示例
+```json
+{
+    "project_name": "your project_name",
+    "project_id": "your project id",
+    "description": "your project description",
+    "create_time": "2025-04-18 18:00:00",
+    "inner_net_domain": "https://tls-cn-beijing.ivolces.com",
+    "topic_count": 1,
+    "iam_project_name": "default",
+    "tags": null,
+    "public_net_domain": "https://tls-cn-beijing.volces.com",
+    "cs_account_channel": ""
+}
+```
 
-使用describe_project_tool工具帮我查下project_id为xxx的项目名是什么
+- Example of the most easily triggered prompt:
+
+Use the describe_project_tool to find the project name for project_id xxx.
 
 ### Tool 4: describe_projects_tool
 
-#### 类型
+Retrieve information for multiple projects under the current permissions.
 
-SaaS
+- Required input parameters for debugging:
 
-#### 详细描述
-
-获取当前权限下的多个项目信息(限制10个)
-
-#### 调试所需的输入参数:
-
-输入：
+`Input`
 
 ```json
 {
-  "inputSchema": {
-    "type": "object",
-    "required": [],
-    "properties": {}
-  },
-  "name": "describe_projects_tool",
-  "description": "获取当前权限下的多个项目信息(限制10个)"
+    "inputSchema": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+    },
+    "name": "describe_projects_tool",
+    "description": "Retrieve information for multiple projects under the current permissions"
 }
 ```
 
-输出：
-    - [参考文档](https://www.volcengine.com/docs/6470/112179)
+`Output`
+- [Reference Documentation](https://www.volcengine.com/docs/6470/112179)
 
-#### 最容易被唤起的 Prompt示例
+```json
+{
+    "total": 1,
+    "projects": [
+        "project_name": "your project_name",
+        "project_id": "your project id",
+        "description": "your project description",
+        "create_time": "2025-04-18 18:00:00",
+        "inner_net_domain": "https://tls-cn-beijing.ivolces.com",
+        "topic_count": 1,
+        "iam_project_name": "default",
+        "tags": null,
+        "public_net_domain": "https://tls-cn-beijing.volces.com",
+        "cs_account_channel": ""
+    ]
+}
+```
 
-使用describe_projects_tool工具帮我查下前十个项目名是什么
+- Example of the most easily triggered prompt:
+
+Use the describe_projects_tool to find the names of the first 10 projects.
 
 ### Tool 5: describe_topic_tool
 
-#### 类型
+Retrieve topic information for a specified topic ID under the current permissions.
 
-SaaS
+- Required input parameters for debugging:
 
-#### 详细描述
-
-获取当前权限下指定主题id的主题信息
-
-#### 调试所需的输入参数:
-
-输入：
+`Input`
 
 ```json
 {
-  "inputSchema": {
-    "type": "object",
-    "required": [],
-    "properties": {
-      "topic_id": {
-        "type": "string",
-        "description": "可选的日志主题ID, 默认为环境变量中设置的topic_id,如果没有设置,则必传"
-      },
-    }
-  },
-  "name": "describe_topic_tool",
-  "description": "获取当前权限下指定主题id的主题信息"
+    "inputSchema": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "topic_id": {
+                "type": "string",
+                "description": "Optional log topic ID. Defaults to the topic_id set in the environment variable. If not set, this is required."
+            }
+        }
+    },
+    "name": "describe_topic_tool",
+    "description": "Retrieve topic information for a specified topic ID under the current permissions"
 }
 ```
 
-输出：
-    - [参考文档](https://www.volcengine.com/docs/6470/112184)
+`Output`
+- [Reference Documentation](https://www.volcengine.com/docs/6470/112184)
 
-#### 最容易被唤起的 Prompt示例
+```json
+{
+    "topic_name": "your topic name",
+    "topic_id": "your topic id",
+    "project_id": "your project id",
+    "ttl": 30,
+    "create_time": "2022-06-22 16:05:27",
+    "modify_time": "2025-03-10 17:19:54",
+    "shard_count": 6,
+    "description": "",
+    "auto_split": false,
+    "max_split_shard": 0,
+    "enable_tracking": false,
+    "time_key": "",
+    "time_format": "",
+    "tags": null,
+    "log_public_ip": true,
+    "enable_hot_ttl": false,
+    "hot_ttl": 0,
+    "cold_ttl": 0,
+    "archive_ttl": 0
+}
+```
 
-使用describe_topic_tool工具帮我查下当前主题的分片数量
+- Example of the most easily triggered prompt:
+
+Use the describe_topic_tool to find the shard count for the current topic.
 
 ### Tool 6: describe_topics_tool
 
-#### 类型
+Retrieve information for multiple topics under a specified project ID within the current permissions.
 
-SaaS
+- Required input parameters for debugging:
 
-#### 详细描述
-
-获取当前权限下指定项目ID的主题信息
-
-#### 调试所需的输入参数:
-
-输入：
+`Input`
 
 ```json
 {
-  "inputSchema": {
-    "type": "object",
-    "required": [],
-    "properties": {
-      "project_id": {
-        "type": "string",
-        "description": "可选的日志项目ID, 默认为环境变量中设置的project_id,如果没有设置,则必传"
-      },
-    }
-  },
-  "name": "describe_topics_tool",
-  "description": "获取当前权限下指定project_id下的多个主题信息(限制10个)"
+    "inputSchema": {
+        "type": "object",
+        "required": [],
+        "properties": {
+            "project_id": {
+                "type": "string",
+                "description": "Optional log project ID. Defaults to the project_id set in the environment variable. If not set, this is required."
+            }
+        }
+    },
+    "name": "describe_topics_tool",
+    "description": "Retrieve information for multiple topics under a specified project ID within the current permissions"
 }
 ```
 
-输出：
-    - [参考文档](https://www.volcengine.com/docs/6470/112185)
+`Output`
+- [Reference Documentation](https://www.volcengine.com/docs/6470/112185)
 
-#### 最容易被唤起的 Prompt示例
+```json
+{
+    "total": 1,
+    "topics": [
+        {
+            "topic_name": "your topic name",
+            "topic_id": "your topic id",
+            "project_id": "your project id",
+            "ttl": 30,
+            "create_time": "2022-06-22 16:05:27",
+            "modify_time": "2025-03-10 17:19:54",
+            "shard_count": 6,
+            "description": "",
+            "auto_split": false,
+            "max_split_shard": 0,
+            "enable_tracking": false,
+            "time_key": "",
+            "time_format": "",
+            "tags": null,
+            "log_public_ip": true,
+            "enable_hot_ttl": false,
+            "hot_ttl": 0,
+            "cold_ttl": 0,
+            "archive_ttl": 0
+        }
+    ]
+}
+```
 
-使用describe_topics_tool工具帮我查下当前项目下前10个项目的分区数量.
+- Example of the most easily triggered prompt:
 
-## 可适配平台
-方舟
+Use the describe_topics_tool to find the shard count for the first 10 topics under the current project.
 
-## 服务开通链接 (整体产品)
+## Supported Platforms
 
-[开通tls服务](https://console.volcengine.com/tls), 未开通的用户会自动重定向到开通也. 如果已经开通,则会跳转首页
+Can be used with cline, cursor, Claude desktop, or other terminals supporting MCP server calls.
 
-## 鉴权方式
+## Service Activation Link
 
-API Key
+[Activate TLS Service](https://console.volcengine.com/tls). Users who have not activated the service will be redirected to the activation page. If already activated, they will be redirected to the homepage.
 
-### 操作步骤
+## Authentication Method
+
+API Key ([Signature Mechanism](https://www.volcengine.com/docs/6470/112168))
+
+## Installation and Deployment
+
+### System Dependencies
+
+- Install Python 3.10 or higher
+- Install uv
 
 ```
 mv .env_example .env
 ```
 
-请在.env文件中设置相关环境变量
+Set relevant environment variables in the `.env` file.
 
-## 安装部署
+For local deployment, set `PROJECT_ID`, `TOPIC_ID`, `ACCOUNT_ID`, etc., as default parameters for the tools.
+
+For server-based deployment, set `DEPLOY_MODE=remote` and only configure `REGION` and `ENDPOINT`.
+
+## Installation
 
 ### Run Locally
 
-#### Option1
+#### Option 1
 
 ```json
 {
@@ -325,7 +401,7 @@ mv .env_example .env
 }
 ```
 
-#### Option2
+#### Option 2
 
 ```json
 {
@@ -334,7 +410,7 @@ mv .env_example .env
             "command": "uvx",
             "args": [
                 "--from",
-                "git+https://git-repository#subdirectory=mcp/server/mcp_server_tls",
+                "git+https://github.com/volcengine/mcp-server#subdirectory=mcp_server_tls",
                 "mcp-server-tls"
             ],
             "env": {
@@ -351,26 +427,26 @@ mv .env_example .env
 }
 ```
 
-##在不同平台的配置
+### Run Remote
 
-### 方舟
+Set `DEPLOY_MODE=remote`.
 
-#### 体验中心
+```shell
+uv --directory /ABSOLUTE/PATH/TO/PARENT/FOLDER run mcp-server-tls -t sse
+```
 
-[示例如下]
-1. 查看MCP Server 详情
-在大模型生态广场，选择合适的MCP Server，并查看详情
-2. 选择MCP Server即将运行的平台
-检查当前MCP Server 已适配的平台，并选择合适的平台
-3. 查看并对比可用的Tools
-仔细查看可用的Tools的功能描述与所需的输入参数，并尝试运行对应的功能。
-4. 获取专属的URL或代码示例
-检查账号登录状态与服务开通情况，生成唯一URL
-5. 去对应的Client的平台进行使用
-点击快捷跳转按钮，前往方舟平台的体验中心进行对应MCP Server的体验
+When used by the caller, authentication information should be base64-encoded and included in the request header as `authorization`:
+
+```json
+{
+    "AccessKeyId": "your ak",
+    "SecretAccessKey": "your sk",
+    "SessionToken": "your token"
+}
+```
+
+## Configuration on Different Platforms
 
 ## License
 
-see LICENSE
-
-
+volcengine/mcp-server is licensed under the [MIT License](https://github.com/volcengine/mcp-server/blob/main/LICENSE).

@@ -12,43 +12,37 @@ T = TypeVar("T")
 LOG = logging.getLogger(__name__)
 LOG.propagate = False
 
+try:
+    LOG.setLevel(getattr(logging, log_config.level.upper(), logging.INFO))
+    log_dir = os.path.dirname(log_config.file)
+    os.makedirs(log_dir, exist_ok=True)
 
-def setup_logger(logger: logging.Logger, config: Any) -> None:
-    try:
-        logger.setLevel(getattr(logging, config.level.upper(), logging.INFO))
-        log_dir = os.path.dirname(config.file)
-        os.makedirs(log_dir, exist_ok=True)
+    formatter = logging.Formatter(
+        "%(asctime)s %(filename)s line:%(lineno)d %(levelname)s %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    rotate_handler = ConcurrentRotatingFileHandler(
+        log_config.file,
+        _WRITE_MODE,
+        log_config.max_size,
+        log_config.backup_count,
+    )
+    rotate_handler.setLevel(logging.INFO)
+    rotate_handler.setFormatter(formatter)
+    LOG.addHandler(rotate_handler)
 
-        formatter = logging.Formatter(
-            "%(asctime)s %(filename)s line:%(lineno)d %(levelname)s %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(formatter)
+    LOG.addHandler(console_handler)
 
-        rotate_handler = ConcurrentRotatingFileHandler(
-            config.file,
-            _WRITE_MODE,
-            config.max_size,
-            config.backup_count,
-        )
-        rotate_handler.setFormatter(formatter)
-        logger.addHandler(rotate_handler)
-
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
-
-    except Exception as e:
-        print("Log initialize failed: %s", e)
-        logger.addHandler(logging.StreamHandler())
-        logger.setLevel(logging.INFO)
-
-
-setup_logger(LOG, log_config)
+except Exception as e:
+    print(f"Log initialize failed: {str(e)}")
 
 
 def log_params(func: Callable[..., T]) -> Callable[..., T]:
     """
-    装饰器，用于在日志中记录函数参数
+    Decorator, used to record function parameters in logs
     """
 
     @functools.wraps(func)
@@ -56,7 +50,8 @@ def log_params(func: Callable[..., T]) -> Callable[..., T]:
         try:
             params = args[1] if len(args) > 1 else kwargs.get("params")
             if params is not None:
-                params_dict = {k: v for k, v in vars(params).items() if v is not None}
+                params_dict = {k: v for k, v in vars(
+                    params).items() if v is not None}
                 LOG.info(
                     "Tool: %s, Params:\n%s",
                     func.__name__,

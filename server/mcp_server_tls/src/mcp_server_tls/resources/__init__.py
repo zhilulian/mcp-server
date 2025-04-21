@@ -1,8 +1,8 @@
 # src/server/resources/__init__.py
 
-from mcp_server_tls.resources.project import describe_project, describe_projects
+from mcp_server_tls.resources.project import describe_project_resource, describe_projects_resource
 
-from mcp_server_tls.resources.topic import describe_topic, describe_topics
+from mcp_server_tls.resources.topic import describe_topic_resource, describe_topics_resource
 
 from mcp_server_tls.resources.log import search_logs_v2_resource
 
@@ -16,20 +16,20 @@ from mcp_server_tls.resources.text_analysis import (
 SUPPORT_RESOURCES = {
     # project
     "describe_project": {
-        "fn": describe_project,
+        "fn": describe_project_resource,
         "uri": "/DescribeProject?ProjectId={project_id}",
     },
     "describe_projects": {
-        "fn": describe_projects,
+        "fn": describe_projects_resource,
         "uri": "/DescribeProjects",
     },
     # topic
     "describe_topic": {
-        "fn": describe_topic,
+        "fn": describe_topic_resource,
         "uri": "/DescribeTopic?TopicId={topic_id}",
     },
     "describe_topics": {
-        "fn": describe_topics,
+        "fn": describe_topics_resource,
         "uri": "/DescribeTopics/ProjectId={project_id}",
     },
     # log

@@ -1,42 +1,37 @@
-#MCP Server 产品名称：AI数据湖服务LAS
-[![产品Logo](las-logo.svg)]
+# MCP Server 产品名称：AI数据湖服务LAS ![产品Logo](https://lf3-static.bytednsdoc.com/obj/eden-cn/mgneh7nulmpgvhn/las/LAS%20LOGO.svg)
 
-## 版本信息
+AI多模态数据湖服务LAS，提供多模态数据集的创建、预览、查询分析、编辑和清洗加工能力。
 
-v1
+<table>
+  <tr>
+    <td>版本</td>
+    <td>V1</td>
+  </tr>
+  <tr>
+    <td>描述</td>
+    <td>LAS提供多模态数据集管理及清洗能力
+</td>
+  </tr>
+  <tr>
+    <td>分类</td>
+    <td>大数据-数据中台
+</td>
+  </tr>
+  <tr>
+    <td>标签</td>
+    <td>多模态数据，数据集，数据湖，数据清洗
+</td>
+  </tr>
+</table>
+# Tools
 
-## 产品描述
+## Tool 1: 获取数据集详情
 
-###短描述（建议20个字）
-[LAS提供多模态数据集管理及清洗能力。]
-
-### 长描述（建议50字，不超过100字）
-
-[AI多模态数据湖服务LAS，提供多模态数据集的创建、预览、查询分析、编辑和清洗加工能力。]
-
-## 分类
-
-[大数据-数据中台]
-
-## 标签
-
-[多模态数据，数据集，数据湖，数据清洗]
-
-## Tools
-
-本 MCP Server 产品提供以下 Tools (工具/能力):
-
-### Tool 1: 获取数据集详情
-
-#### 类型
-
-saas
-
-#### 详细描述
+### 详细描述
 
 获取数据集详细信息，包括大小，总行数，表结构schema等信息
 
-#### 调试所需的输入参数:
+### 调试所需的输入参数:
 
 输入：
 
@@ -62,21 +57,17 @@ saas
 - 输出结果描述
 - 当前数据集id对应的数据集信息
 
-#### 最容易被唤起的 Prompt示例
+### 最容易被唤起的 Prompt示例
 
 LAS中这是一个什么数据集
 
-### Tool 2: 查询数据集
+## Tool 2: 查询数据集
 
-#### 类型
-
-saas
-
-#### 详细描述
+### 详细描述
 
 检索数据集，通过query，检索匹配名称的数据集
 
-#### 调试所需的输入参数:
+### 调试所需的输入参数:
 
 输入：
 
@@ -102,13 +93,13 @@ saas
 - 输出结果描述
 - 匹配query的数据集基本信息list
 
-#### 最容易被唤起的 Prompt示例
+### 最容易被唤起的 Prompt示例
 
 LAS中，有哪些关于 image 的数据集
 
-### Tool 3: 检索数据集数据项
+## Tool 3: 检索数据集数据项
 
-#### 类型
+### 类型
 
 saas
 
@@ -142,51 +133,51 @@ saas
 - 输出结果描述
 - 匹配query的数据集数据内容数据项list
 
-#### 最容易被唤起的 Prompt示例
+### 最容易被唤起的 Prompt示例
 
 LAS中，数据集中关于 RAY 相关的内容有哪些
 
-## 可适配平台
+# 可适配平台
 
 方舟，python，cursor， Claude Desktop
 
-## 服务开通链接 (整体产品)
+# 服务开通链接 (整体产品)
 
 [请在此处填写该 MCP Server 产品的整体服务开通链接]
 
-## 鉴权方式
+# 鉴权方式
 
 火山引擎AKSK鉴权体系
 
-## 安装部署
+# 安装部署
 
-[请在此处提供详细的安装和部署说明，根据您的产品特性选择合适的描述方式。]
-[示例如下]
+## 系统依赖
 
-### Using uv (recommended)
+- 安装 Python 3.10 或者更高版本
+- 安装 uv
+  - 如果是linux系统
+  
+  ```
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+  
+  - 如果是window系统
+  
+  ```
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+- 同步依赖项并更uv.lock:
+  ```bash
+  uv sync
+  ```
+- 构建cmp server:
+  ```bash
+  uv build
+  ```
 
-When using [`uv`](https://docs.astral.sh/uv/) no specific installation is needed. We will
-use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server-las*.
+## 方舟
 
-### Using PIP
-
-Alternatively you can install `mcp-server-git` via pip:
-
-```
-pip install mcp-server-las
-```
-
-After installation, you can run it as a script using:
-
-```
-python -m mcp_server_las
-```
-
-##在不同平台的配置
-
-### 方舟
-
-#### 体验中心
+### 体验中心
 
 [示例如下]
 
@@ -201,18 +192,7 @@ python -m mcp_server_las
 5. 去对应的Client的平台进行使用
    点击快捷跳转按钮，前往方舟平台的体验中心进行对应MCP Server的体验
 
-## 资源列表 - optional
-
-## 商业化 - optional
-
-## 产品截图/视频 - optional
-
-### Cursor
-
 ## 部署
-
-[常见的部署方式，例如docker和uvx]
-[示例如下]
 
 ### UVX
 
@@ -237,5 +217,5 @@ python -m mcp_server_las
 ```
 
 ## License
+volcengine/mcp-server is licensed under the MIT License.
 
-MIT

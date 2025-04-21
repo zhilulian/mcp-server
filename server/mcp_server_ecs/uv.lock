@@ -132,6 +132,15 @@ wheels = [
 ]
 
 [[package]]
+name = "jsonref"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/aa/0d/c1f3277e90ccdb50d33ed5ba1ec5b3f0a242ed8c1b1a85d3afeb68464dca/jsonref-1.1.0.tar.gz", hash = "sha256:32fe8e1d85af0fdefbebce950af85590b22b60f9e95443176adbde4e1ecea552", size = 8814 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl", hash = "sha256:590dc7773df6c21cbf948b5dac07a72a251db28b0238ceecce0a2abfa8ec30a9", size = 9425 },
+]
+
+[[package]]
 name = "mcp"
 version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
@@ -157,6 +166,7 @@ source = { editable = "." }
 dependencies = [
     { name = "concurrent-log-handler" },
     { name = "dynaconf" },
+    { name = "jsonref" },
     { name = "mcp" },
     { name = "pydantic" },
     { name = "volcengine-python-sdk" },
@@ -166,6 +176,7 @@ dependencies = [
 requires-dist = [
     { name = "concurrent-log-handler", specifier = "==0.9.25" },
     { name = "dynaconf", specifier = "==3.2.10" },
+    { name = "jsonref", specifier = ">=1.1.0" },
     { name = "mcp", specifier = ">=1.6.0" },
     { name = "pydantic", specifier = "==2.10.6" },
     { name = "volcengine-python-sdk", specifier = "==1.1.2" },

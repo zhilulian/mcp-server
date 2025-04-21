@@ -1,29 +1,36 @@
+from mcp import types
 from mcp_server_ecs.common.logs import LOG
 
 
-# 处理空响应错误
+# handle empty response error
 def _handle_empty_response(action_name):
     LOG.error("%s returned empty response", action_name)
-    return {"error": "Empty response from server"}
+    return [types.TextContent(
+        type="text",
+        text="Error: empty response"
+    )]
 
 
-# 处理异常错误
+# handle exception error
 def _handle_exception(action_name, error):
     LOG.error("Exception when calling %s: %s", action_name, str(error))
-    return {"error": str(error)}
+    return [types.TextContent(
+        type="text",
+        text=f"Error: {str(error)}"
+    )]
 
 
 def handle_error(action_name, error=None):
-    """统一处理API错误响应
+    """Handle API error response
 
     Args:
-        action_name: API动作名称
-        error: 异常对象(可选)
+        action_name: API action name
+        error: Exception object (optional)
 
     Returns:
-        统一格式的错误响应字典
+        A list of TextContent objects representing the error in a unified format
     """
-    # 创建处理函数映射表
+    # create a mapping table for handling functions
     handlers = {
         True: lambda: _handle_exception(action_name, error),
         False: lambda: _handle_empty_response(action_name),

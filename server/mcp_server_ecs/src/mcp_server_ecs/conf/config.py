@@ -10,5 +10,6 @@ settings = Dynaconf(
     ],
 )
 
+
 log_config = settings.get("logging", {})
 auth_config = settings.get("auth", {})

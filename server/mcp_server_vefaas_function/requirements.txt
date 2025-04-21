@@ -1,2 +1,2 @@
-mcp==1.3.0
+git+https://github.com/zihengli-bytedance/python-sdk.git@temp-for-volc
 volcengine-python-sdk==1.1.3

@@ -22,7 +22,7 @@ class BucketResource(TosResource):
         api: https://www.volcengine.com/docs/6349/74850
         """
         if self.configured_buckets:
-            resp = await self.call(bucket="")
+            resp = await self.get(bucket="")
             configured_bucket_list = [
                 bucket for bucket in resp.json()["Buckets"]
                 if bucket['Name'] in self.configured_buckets

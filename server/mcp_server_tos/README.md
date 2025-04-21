@@ -1,10 +1,9 @@
-# MCP Server 产品名称： mcp-server-tos
+# MCP Server 产品名称：TOS MCP Server
+![产品Logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_d64ae2c316177f1d1b8108e38c106ae8.svg)
 
-![产品Logo](./static/image/TOS.svg)
 
 ## 版本信息
-
-V0.1.0
+v0.1
 
 ## 产品描述
 
@@ -18,7 +17,7 @@ TOS 官方推出的 MCP Server 提供强大的查询能力，支持通过自然�
 
 ## 分类
 
-云基础-存储
+存储
 
 ## 标签
 
@@ -31,7 +30,6 @@ TOS 官方推出的 MCP Server 提供强大的查询能力，支持通过自然�
 ### Tool 1: list_buckets
 
 #### 类型
-
 SaaS
 
 #### 详细描述
@@ -39,10 +37,8 @@ SaaS
 该工具允许您便捷查看火山引擎TOS的存储桶列表。
 
 #### 调试所需的输入参数:
-
 输入：
-
-```json
+```json 
 {
   "inputSchema": {
     "type": "object",
@@ -52,15 +48,13 @@ SaaS
   "name": "list_buckets",
   "description": "查询您账号下拥有的所有存储桶的列表。"
 }
-
 ```
-
 输出：
-    - [参考文档](https://www.volcengine.com/docs/6349/74850)
-
+- 返回您账号下拥有的存储桶列表，包含桶名、创建时间、桶位置信息、访问域名等信息。
 #### 最容易被唤起的 Prompt示例
-
-使用list_buckets tool工具帮我查询TOS桶列表
+```
+列举火山引擎 TOS 的存储桶列表。
+```
 
 ### Tool 2: list_objects
 
@@ -107,12 +101,13 @@ SaaS
 ```
 
 输出：
-    - [参考文档](https://www.volcengine.com/docs/6349/357812)
+- 返回您指定存储下的对象列表，包含对象名、对象的最后修改时间、ETag、对象大小、存储类型等信息。
 
 
 #### 最容易被唤起的 Prompt示例
-
-使用list_objects tool工具帮我查询example桶下的对象列表
+```
+列举火山引擎 TOS 的 example 桶下的对象。
+```
 
 ### Tool 3: get_object tool
 
@@ -153,36 +148,53 @@ SaaS
 ```
 
 输出：
-    - [参考文档](https://www.volcengine.com/docs/6349/74856)
+- 返回具体的对象内容，对于文本内容的对象，比如文本文件、CSV 文件等，该工具返回的是内容。对于图片、视频等二进制对象，该工具返回的是Base64编码的内容。
+
 
 #### 最容易被唤起的 Prompt示例
-
-使用get_object tool工具帮我读取example桶下的example.txt的文件内容
+```
+读取火山引擎 TOS 桶example下对象名为example.txt的文件内容
+```
 
 ## 可适配平台
-方舟
+方舟，python，cursor
 
 ## 服务开通链接 (整体产品)
 
-[开通tos服务](https://console.volcengine.com/tos), 未开通的用户会自动重定向到开通页. 如果已经开通,则会跳转首页
+<https://console.volcengine.com/tos>
 
 ## 鉴权方式
+火山引擎，从 volcengine 管理控制台获取 volcengine 访问密钥 ID、秘密访问密钥和区域，请在.env文件中设置相关环境变量
 
-API Key
+## 安装部署  
 
-### 操作步骤
+### 系统依赖
+- 安装 Python 3.10 或者更高版本
+- 安装 uv 
+  - 如果是linux系统 
+  ```
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+  - 如果是window系统 
+  ```
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+- 同步依赖项并更uv.lock:
+  ```bash
+  uv sync
+  ```
+- 构建mcp server:
+  ```bash
+  uv build
+  ```
+  
+### Using uv (recommended)
 
-```
-mv .env_example .env
-```
+When using [`uv`](https://docs.astral.sh/uv/) no specific installation is needed. We will
+use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server-tos*.
 
-请在.env文件中设置相关环境变量
-
-## 安装部署
-
-### Run Locally
-
-#### Option1
+#### 本地配置
+添加以下配置到你的 mcp settings 文件中
 
 ```json
 {
@@ -200,37 +212,9 @@ mv .env_example .env
 }
 ```
 
-#### Option2
-
-```json
-{
-    "mcpServers": {
-        "tos": {
-            "command": "uvx",
-            "args": [
-                "--from",
-                "git+https://github.com/volcengine/ai-app-lab#subdirectory=mcp/server/mcp_server_tos",
-                "mcp-server-tos"
-            ],
-            "env": {
-                "VOLC_ACCESSKEY": "your ak",
-                "VOLC_SECRETKEY": "your sk",
-                "REGION": "tos region",
-                "TOS_ENDPOINT": "tos endpoint",
-                "SECURITY_TOKEN": "your security token",
-                "TOS_BUCKET": "your specific bucket"
-            }
-        }
-    }
-}
-```
-
-##在不同平台的配置
-
+## 在不同平台的配置
 ### 方舟
-
 #### 体验中心
-
 [示例如下]
 1. 查看MCP Server 详情
 在大模型生态广场，选择合适的MCP Server，并查看详情
@@ -243,8 +227,43 @@ mv .env_example .env
 5. 去对应的Client的平台进行使用
 点击快捷跳转按钮，前往方舟平台的体验中心进行对应MCP Server的体验
 
-## License
+## 资源列表 - optional
 
-see LICENSE
+## 商业化 - optional
+
+## 产品截图/视频 - optional
+
+### Cursor
+
+
+## 部署
+[示例如下]
+
+### UVX
+```json
+{
+    "mcpServers": {
+        "tos-mcp": {
+            "command": "uvx",
+            "args": [
+                "--from",
+                "git+https://github.com/volcengine/mcp-server#subdirectory=server/mcp_server_tos",
+                "mcp-server-tos"
+            ],
+            "env": {
+                "VOLC_ACCESSKEY": "your access-key-id",
+                "VOLC_SECRETKEY": "your access-key-secret",
+                "REGION": "tos region",
+                "TOS_ENDPOINT": "tos endpoint",
+                "SECURITY_TOKEN": "your security token",
+                "TOS_BUCKET": "your specific bucket"
+            }
+        }
+    }
+}
+```
+
+## License
+volcengine/mcp-server is licensed under the [MIT License](https://github.com/volcengine/mcp-server/blob/main/LICENSE).
 
 

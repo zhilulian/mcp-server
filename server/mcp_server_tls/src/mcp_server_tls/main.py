@@ -1,7 +1,9 @@
 import logging
 import argparse
+
 from mcp_server_tls.config import TLS_CONFIG
 from mcp_server_tls.server import mcp
+from mcp_server_tls.server import add_resources_to_mcp, add_tools_to_mcp
 
 logging.basicConfig(
     level=logging.INFO,

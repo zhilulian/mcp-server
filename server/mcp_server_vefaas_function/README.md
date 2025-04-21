@@ -1,6 +1,6 @@
 # MCP Server 产品名称：veFaaS
 
-![产品Logo](./logo.png)
+![logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_a6de406dba64a03ae8dc0a60827de011.png)
 
 ## 版本信息
 
@@ -12,7 +12,7 @@ v0.0.1
 
 veFaaS MCP Server 祝你轻松管理函数和触发器生命周期。
 
-### 长描述（建议50字，不超过100字）
+### 长描述
 
 veFaaS MCP Server 提供创建、更新、发布函数和添加触发器的能力。
 
@@ -625,7 +625,7 @@ OAuth 2.0
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/volcengine/ai-app-lab#subdirectory=mcp/server/mcp_server_vefaas_function",
+        "git+https://github.com/volcengine/mcp-server#subdirectory=/server/mcp_server_vefaas_function",
         "mcp-server-vefaas-function"
       ],
       "env": {
@@ -639,4 +639,4 @@ OAuth 2.0
 
 ## License
 
-MIT
+volcengine/mcp-server is licensed under the MIT License.

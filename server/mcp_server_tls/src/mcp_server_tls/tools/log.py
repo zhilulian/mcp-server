@@ -4,11 +4,17 @@ import logging
 from typing import Optional
 from mcp_server_tls.config import TLS_CONFIG
 from mcp_server_tls.resources.log import search_logs_v2_resource
+from mcp_server_tls.utils import get_sdk_auth_info
 
 logger = logging.getLogger(__name__)
 
-async def search_logs_v2_tool(query: str, topic_id: Optional[str] = None, start_time: Optional[int] = None,
-                              end_time: Optional[int] = None, limit: int = 10) -> dict:
+async def search_logs_v2_tool(
+        query: str,
+        topic_id: Optional[str] = None,
+        start_time: Optional[int] = None,
+        end_time: Optional[int] = None,
+        limit: Optional[int] = 10
+) -> dict:
     """Search logs using the provided query from the TLS service.
 
     This tool allows you to search logs using various query types including full text search,
@@ -39,24 +45,34 @@ async def search_logs_v2_tool(query: str, topic_id: Optional[str] = None, start_
         # Perform SQL analysis
         search_logs("* | select count(*) as count group by status_code")
     """
-    if not query:
-        raise ValueError("query is required")
-
-    logger.info(f"Received search_logs request with query: {query}")
-
-    if end_time is None:
-        end_time = int(time.time() * 1000)
-
-    if start_time is None:
-        start_time = end_time - ( 15 * 60 * 1000 )
-
-    topic_id = TLS_CONFIG.topic_id or topic_id
-    if not topic_id:
-        raise ValueError("topic id is required")
-
-    logger.info(f"Searching logs with query: {query} for topic: {topic_id}, limit: {limit}, time range: {start_time} to {end_time}")
-
     try:
-        return await search_logs_v2_resource(topic_id, query, start_time, end_time, limit)
+
+        from mcp_server_tls.server import mcp
+
+        auth_info = get_sdk_auth_info(mcp.get_context())
+
+        if not query:
+            raise ValueError("query is required")
+
+        if end_time is None:
+            end_time = int(time.time() * 1000)
+
+        if start_time is None:
+            start_time = end_time - ( 15 * 60 * 1000 )
+
+        topic_id = TLS_CONFIG.topic_id or topic_id
+        if not topic_id:
+            raise ValueError("topic id is required")
+
+        return await search_logs_v2_resource(
+            auth_info=auth_info,
+            topic_id=topic_id,
+            query=query,
+            start_time=start_time,
+            end_time=end_time,
+            limit=limit,
+        )
+
     except Exception as e:
+        logger.error("call tool error: search_logs_v2_tool, err is {}".format(str(e)))
         return {"error": str(e)}

@@ -1,5 +1,5 @@
 # MCP Server CloudSearch
-![logo](logo-small.png)
+![logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_001a90b5ba5d5b64368e897baa96a824.png)
 
 ## 版本信息
 v1
