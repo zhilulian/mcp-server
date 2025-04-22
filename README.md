@@ -6,9 +6,9 @@
 
 ## 产品优势
 
-- **丰富的资源集成：**整合了丰富的云上资源及优质的三方服务，提供火山引擎官方云服务 MCP Server，如数据库、存储等，同时集成了各类三方生态工具，从而为客户提供更多生产可用且高价值的各类工具及资源。
-- **灵活的部署模式：**提供 Local 及 Remote 的MCP服务部署模式，灵活适配企业客户的多样化应用场景。
-- **端到端应用的生态打通：**依托字节系生态资源，轻松构建端到端的 AI 应用。用户可在生态广场选择所需的 MCP服务，结合[火山方舟](https://console.volcengine.com/ark/region:ark+cn-beijing/overview?briefPage=0&briefType=introduce&projectName=default&type=new)提供的大模型服务，跳转至火山方舟或支持 MCP 协议的Trae等平台快速开发构建应用。
+- **丰富的资源集成：** 整合了丰富的云上资源及优质的三方服务，提供火山引擎官方云服务 MCP Server，如数据库、存储等，同时集成了各类三方生态工具，从而为客户提供更多生产可用且高价值的各类工具及资源。
+- **灵活的部署模式：** 提供 Local 及 Remote 的MCP服务部署模式，灵活适配企业客户的多样化应用场景。
+- **端到端应用的生态打通：** 依托字节系生态资源，轻松构建端到端的 AI 应用。用户可在生态广场选择所需的 MCP服务，结合[火山方舟](https://console.volcengine.com/ark/region:ark+cn-beijing/overview?briefPage=0&briefType=introduce&projectName=default&type=new)提供的大模型服务，跳转至火山方舟或支持 MCP 协议的Trae等平台快速开发构建应用。
 
 ## 使用指引
 
