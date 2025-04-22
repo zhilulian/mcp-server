@@ -1,14 +1,9 @@
-
-![产品Logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_f086a69858decb7081dadb0786a1dd4f.png)
-# MCP Server 产品名称
+## MCP Server 产品名称
 ByteHouse MCP Server
 ## 版本信息
 v25.4
 ## 产品描述
-### 短描述
-ByteHouse MCP Server是大语言模型和ByteHouse实例的沟通桥梁，能高效传递信息，实现二者无缝对接与协同。它还为ByteHouse数据开发、查询优化、集群运维提供全生命周期智能化服务。数据开发时，提供精准指引与建议，提升效率和质量；查询优化方面，支持分析语句、优化性能；集群运维环节，提供监测状态、预警风险、自动诊断修复，保障系统高效运转。
-### 长描述
-作为ByteHouse智能代理服务，ByteHouse MCP Server有着不可替代的作用。它可以实现大语言模型（LLMs）与ByteHouse的高效协同。在数据开发方面，大语言模型能够根据开发者的自然语言描述生成相应的代码，而ByteHouse MCP Server则可以将这些代码准确地应用到ByteHouse实例中，避免了开发者手动编写代码时可能出现的错误和繁琐过程，大大提高了数据开发的效率。在查询优化环节，大语言模型可以分析查询需求和数据特点，提出优化建议，ByteHouse MCP Server则能将这些建议转化为实际的优化策略应用于ByteHouse实例，从而提升查询性能。对于集群运维，大语言模型可以预测潜在的问题和风险，ByteHouse MCP Server会及时将这些信息反馈给ByteHouse实例，并协助采取相应的措施进行预防和处理。
+ByteHouse MCP Server有着不可替代的作用。它可以实现大语言模型（LLMs）与ByteHouse的高效协同。在数据开发方面，大语言模型能够根据开发者的自然语言描述生成相应的代码，而ByteHouse MCP Server则可以将这些代码准确地应用到ByteHouse实例中，避免了开发者手动编写代码时可能出现的错误和繁琐过程，大大提高了数据开发的效率。在查询优化环节，大语言模型可以分析查询需求和数据特点，提出优化建议，ByteHouse MCP Server则能将这些建议转化为实际的优化策略应用于ByteHouse实例，从而提升查询性能。对于集群运维，大语言模型可以预测潜在的问题和风险，ByteHouse MCP Server会及时将这些信息反馈给ByteHouse实例，并协助采取相应的措施进行预防和处理。
 ## 分类
 大数据
 ## 标签
@@ -30,8 +25,8 @@ ByteHouse MCP Server是大语言模型和ByteHouse实例的沟通桥梁，能高
 能够实现可交互地执行数据操作语言（DML）以及数据定义语言（DDL）的 SQL 语句。在使用者输入相关的 DML/DDL SQL 语句后，该助手会迅速对语句进行处理并执行，之后及时反馈执行结果，同时还会对执行结果给出详细的解释，帮助使用者更好地理解操作的过程和最终产生的影响。  
 ### get_bytehouse_table_engine_doc
 通过交互式咨询，能够方便快捷地获取关于ByteHouse表引擎使用方面的详细说明。无论是初次接触ByteHouse表引擎的新手想要了解基础的操作流程，还是有一定使用经验的用户希望深入探究其高级特性，都可以为你精准提供你所需要的ByteHouse表引擎使用说明内容。 
-#### 最容易被唤起的 Prompt示例
-###list_database
+## 最容易被唤起的 Prompt示例
+### list_database
 我想要查询当前所使用的集群环境中，都存在哪些数据库。具体来说，希望获取该集群内所有已创建数据库的名称等相关信息，以便进一步对这些数据库进行管理、分析或者使用等操作。 
 ### list_tables
 我想要查询数据库名为 {database name} 的这个数据库中具体包含了哪些数据表。 

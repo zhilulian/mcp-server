@@ -46,7 +46,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 ### Installation
 Clone the repository:
 ```bash
-git clone https://github.com/volcengine/mcp-server/tree/main/mcp_server_ecs.git
+git clone git@github.com:volcengine/mcp-server.git
 ```
 
 ### Usage
@@ -54,7 +54,7 @@ Start the server:
 
 #### UV
 ```bash
-cd mcp_server_ecs
+cd mcp-server/server/mcp_server_ecs
 uv run mcp-server-ecs
 
 # Start with sse mode (default is stdio)
@@ -95,7 +95,7 @@ For example, set these environment variables before starting the server:
 export FASTMCP_PORT=8000
 export VOLC_ACCESSKEY={ak}
 export VOLC_SECRETKEY={sk}
-export VOLC_REGION={sk}
+export VOLC_REGION={region}
 export VOLC_ENDPOINT={endpoint}
 
 ```
@@ -115,6 +115,7 @@ export VOLC_ENDPOINT={endpoint}
                 "VOLC_ACCESSKEY": "",
                 "VOLC_SECRETKEY": "",
                 "VOLC_ENDPOINT": "",
+                "VOLC_REGION": "",
                 "FASTMCP_PORT": ""
             }
         }
@@ -130,4 +131,4 @@ export VOLC_ENDPOINT={endpoint}
 
 
 # License
-MIT
+volcengine/mcp-server is licensed under the [MIT License](https://github.com/volcengine/mcp-server/blob/main/LICENSE).

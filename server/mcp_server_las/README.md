@@ -23,6 +23,7 @@ AI多模态数据湖服务LAS，提供多模态数据集的创建、预览、查
 </td>
   </tr>
 </table>
+
 # Tools
 
 ## Tool 1: 获取数据集详情
@@ -59,7 +60,7 @@ AI多模态数据湖服务LAS，提供多模态数据集的创建、预览、查
 
 ### 最容易被唤起的 Prompt示例
 
-LAS中这是一个什么数据集
+LAS中，数据集id为ds_public的数据集是做什么的
 
 ## Tool 2: 查询数据集
 
@@ -98,16 +99,11 @@ LAS中这是一个什么数据集
 LAS中，有哪些关于 image 的数据集
 
 ## Tool 3: 检索数据集数据项
-
-### 类型
-
-saas
-
-#### 详细描述
+### 详细描述
 
 通过query，检索特定数据集中的内容，将数据项检索出来
 
-#### 调试所需的输入参数:
+### 调试所需的输入参数:
 
 输入：
 
@@ -141,13 +137,13 @@ LAS中，数据集中关于 RAY 相关的内容有哪些
 
 方舟，python，cursor， Claude Desktop
 
-# 服务开通链接 (整体产品)
+# 服务开通链接
 
-[请在此处填写该 MCP Server 产品的整体服务开通链接]
+[火山引擎AI数据湖服务LAS](https://www.volcengine.com/product/las)
 
 # 鉴权方式
 
-火山引擎AKSK鉴权体系
+火山引擎 AKSK 鉴权体系
 
 # 安装部署
 
@@ -155,6 +151,7 @@ LAS中，数据集中关于 RAY 相关的内容有哪些
 
 - 安装 Python 3.10 或者更高版本
 - 安装 uv
+  
   - 如果是linux系统
   
   ```
@@ -167,10 +164,12 @@ LAS中，数据集中关于 RAY 相关的内容有哪些
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 - 同步依赖项并更uv.lock:
+  
   ```bash
   uv sync
   ```
 - 构建cmp server:
+  
   ```bash
   uv build
   ```
@@ -218,4 +217,3 @@ LAS中，数据集中关于 RAY 相关的内容有哪些
 
 ## License
 volcengine/mcp-server is licensed under the MIT License.
-

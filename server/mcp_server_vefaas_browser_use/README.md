@@ -1,28 +1,13 @@
-# MCP Server 产品名称：veFaaS browser-use MCP Server
-
-![logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_8fc72d37e54a2b28d334112241dd84ca.png)
-
-## 版本信息
-
-v0.0.1
-
-## 产品描述
-
-### 短描述
-
-veFaaS browser-use MCP server 自动化你的浏览器操作任务。
-
-### 长描述（建议50字，不超过100字）
+# veFaaS browser-use MCP Server
 
 veFaaS browser-use MCP server 可以让用户仅输入检索任务，就可以由大模型分析拆解任务，调用浏览器实时搜索任务，最后整合输出任务结果。
 
-## 分类
-
-FaaS，函数服务，函数
-
-## 标签
-
-veFaaS，函数服务，browser-use，浏览器
+| | |
+|------|------|
+| 版本 | v0.0.1 |
+| 描述 | veFaaS browser-use MCP server 自动化你的浏览器操作任务 |
+| 分类 | 容器与中间件 |
+| 标签 | veFaaS，函数服务，browser-use，浏览器 |
 
 ## Tools
 

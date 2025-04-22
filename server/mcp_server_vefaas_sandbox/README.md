@@ -1,34 +1,13 @@
 # veFaaS Code-Sandbox MCP Server
 
-![logl](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_14a9feb1e74b8591ff5f7d5d27509bdf.png)
-
-## 版本信息
-
-v1
-
-## 产品描述
-
-### 短描述
-
-发送代码至沙盒服务运行，支持多种语言运行时
-
-### 长描述
-
 veFaaS Code-Sandbox 的 mcp 实现，支持 python、go、java、bash等多种运行时，适用于代码调试、AI Agent 开发等场景
 
-```
-Client --> MCP Server --> veFaaS Sandbox Service --> K8s Pod (veFaaS SandboxFusion)
-                                                     |
-                                                     |-- veFaaS: request & Pod 管理
-```
-
-## 分类
-
-计算
-
-## 标签
-
-FaaS、函数服务、代码沙箱、Code Sandbox
+| | |
+|------|------|
+| 版本 | v1 |
+| 描述 | 发送代码至沙盒服务运行，支持多种语言运行时 |
+| 分类 | 容器与中间件 |
+| 标签 | FaaS、函数服务、代码沙箱、Code Sandbox |
 
 ## Tools
 

@@ -2,17 +2,30 @@
 
 云助手的 MCP Server 实现，可以自然语言驱动向云服务器实例发送和执行自定义命令，适用于ECS带内运维、故障排查、环境检测、软件管理等场景。目前支持Linux操作系统。
 
-| 版本 | v0.1.0                                 | 
-|----|-----------------------------------------|
-| 描述 | 自然语言驱动向云服务器实例发送和执行自定义命令 |
-| 分类 | 计算                                    |
-| 标签 | 命令执行、带内运维                         |
+<table>
+  <tr>
+    <td>版本</td>
+    <td>v0.1.0</td>
+  </tr>
+  <tr>
+    <td>描述</td>
+    <td>自然语言驱动向云服务器实例发送和执行自定义命令</td>
+  </tr>
+  <tr>
+    <td>分类</td>
+    <td>计算</td>
+  </tr>
+  <tr>
+    <td>标签</td>
+    <td> 命令执行、带内运维</td>
+  </tr>
+</table>
 
 # Tools
-本 MCP Server 产品提供以下 Tools (工具/能力):
+本 MCP Server 产品提供以下 Tools:
 ## Tool 1: run_command
 向目标实例发送命令，生成一条执行记录，等待执行完成，然后检索并返回执行结果。
-**_run_command工具提供命令执行的带内通道，执行模型生成的命令_**。
+**run_command工具提供命令执行的带内通道，执行模型生成的命令**。
 
 - 调试所需的输入参数:
 
@@ -59,12 +72,11 @@
 # 可适配平台  
 方舟、cursor、claude desktop 或支持MCP server调用的其他终端
 
-# 服务开通链接 (整体产品)  
+# 服务开通链接
 服务类产品，无需开通
 
 # 鉴权方式  
-[请在此处说明该 MCP Server 产品使用的鉴权方式。例如：API Key，OAuth 2.0，Token 等，并简要说明如何获取和使用凭证。]  
-AKSK
+火山引擎AKSK鉴权体系
 
 # 安装部署
 ## 系统依赖
@@ -80,7 +92,6 @@ AKSK
   ```
 
 # 部署
-[示例如下]
 
 UV
 ```json
@@ -95,7 +106,7 @@ UV
       },
       "args": [
         "--directory",
-        "/<your local path to mcp-servers>/mcp-servers/src/mcp_server_cloud_assistant",
+        "/<your local path to mcp-servers>/mcp_server_cloud_assistant/src/mcp_server_cloud_assistant",
         "run",
         "mcp-server-cloud-assistant"
       ]
@@ -123,8 +134,6 @@ UVX
   }
 }
 ```
-
-# 截图或视频说明
 
 # License
 volcengine/mcp-server is licensed under the [MIT License](https://github.com/volcengine/mcp-server/blob/main/LICENSE)

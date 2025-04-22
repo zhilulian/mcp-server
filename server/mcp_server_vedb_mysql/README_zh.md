@@ -2,7 +2,7 @@
 
 这个MCP服务器提供了一个工具，用于与火山引擎（VolcEngine）的veDB MySQL服务进行交互，允许您从您的数据集中搜索和检索知识。
 
-## Tools
+## 功能
 
 - list_vedb_mysql_instances
 > 用于获取用户的veDB MySQL实例列表，包括实例ID，以及实例的基本信息
@@ -48,7 +48,7 @@ MCP server 依赖的环境变量:
 
 - `PORT`: Port for the FastMCP server (default: 8000)
 
-## Usage
+## 使用
 
 ### 运行 MCP Server
 

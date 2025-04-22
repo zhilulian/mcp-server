@@ -1,27 +1,13 @@
-# MCP Server 产品名称：TOS MCP Server
-![产品Logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_d64ae2c316177f1d1b8108e38c106ae8.svg)
+# MCP Server 产品名称：TOS MCP Server![产品Logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_d64ae2c316177f1d1b8108e38c106ae8.svg)
 
+TOS 官方推出的 MCP Server 提供强大的查询能力，支持通过自然语言便捷地探索和检索 TOS 中存储的内容，提升了数据访问的直观性与效率。可以与火山引擎云产品
+MCP 组合，助力构建更智能的业务应用场景。
 
-## 版本信息
-v0.1
-
-## 产品描述
-
-### 短描述
-
-基于 MCP 管理 TOS 资源，智能化探索数据
-
-### 长描述
-
-TOS 官方推出的 MCP Server 提供强大的查询能力，支持通过自然语言便捷地探索和检索 TOS 中存储的内容，提升了数据访问的直观性与效率。可以与火山引擎云产品 MCP 组合，助力构建更智能的业务应用场景。
-
-## 分类
-
-存储
-
-## 标签
-
-搜索，视频，图片，文本, 对象存储
+| 版本 | v0.1.0                   | 
+|----|--------------------------|
+| 描述 | 基于 MCP 管理 TOS 资源，智能化探索数据 |
+| 分类 | 存储                       |
+| 标签 | 搜索，视频，图片，文本              |
 
 ## Tools
 
@@ -30,6 +16,7 @@ TOS 官方推出的 MCP Server 提供强大的查询能力，支持通过自然�
 ### Tool 1: list_buckets
 
 #### 类型
+
 SaaS
 
 #### 详细描述
@@ -37,7 +24,9 @@ SaaS
 该工具允许您便捷查看火山引擎TOS的存储桶列表。
 
 #### 调试所需的输入参数:
+
 输入：
+
 ```json 
 {
   "inputSchema": {
@@ -49,9 +38,13 @@ SaaS
   "description": "查询您账号下拥有的所有存储桶的列表。"
 }
 ```
+
 输出：
+
 - 返回您账号下拥有的存储桶列表，包含桶名、创建时间、桶位置信息、访问域名等信息。
+
 #### 最容易被唤起的 Prompt示例
+
 ```
 列举火山引擎 TOS 的存储桶列表。
 ```
@@ -64,7 +57,8 @@ SaaS
 
 #### 详细描述
 
-该工具允许您便捷查看火山引擎TOS桶下的对象列表，每次请求都会返回存储桶中的部分或全部对象（最多 1000 个）。您可以使用请求参数作为选择条件，返回存储桶中对象的子集。
+该工具允许您便捷查看火山引擎TOS桶下的对象列表，每次请求都会返回存储桶中的部分或全部对象（最多 1000
+个）。您可以使用请求参数作为选择条件，返回存储桶中对象的子集。
 
 #### 调试所需的输入参数:
 
@@ -74,7 +68,9 @@ SaaS
 {
   "inputSchema": {
     "type": "object",
-    "required": ["bucket"],
+    "required": [
+      "bucket"
+    ],
     "properties": {
       "bucket": {
         "type": "string",
@@ -101,10 +97,11 @@ SaaS
 ```
 
 输出：
+
 - 返回您指定存储下的对象列表，包含对象名、对象的最后修改时间、ETag、对象大小、存储类型等信息。
 
-
 #### 最容易被唤起的 Prompt示例
+
 ```
 列举火山引擎 TOS 的 example 桶下的对象。
 ```
@@ -117,7 +114,8 @@ SaaS
 
 #### 详细描述
 
-从 TOS 检索对象，需要指定桶名和对象的完整路径。对于文本内容的对象，比如文本文件、CSV 文件等，该工具返回的是其内容。对于图片、视频等二进制对象，该工具返回的是Base64编码的内容。
+从 TOS 检索对象，需要指定桶名和对象的完整路径。对于文本内容的对象，比如文本文件、CSV
+文件等，该工具返回的是其内容。对于图片、视频等二进制对象，该工具返回的是Base64编码的内容。
 
 #### 调试所需的输入参数:
 
@@ -148,15 +146,17 @@ SaaS
 ```
 
 输出：
+
 - 返回具体的对象内容，对于文本内容的对象，比如文本文件、CSV 文件等，该工具返回的是内容。对于图片、视频等二进制对象，该工具返回的是Base64编码的内容。
 
-
 #### 最容易被唤起的 Prompt示例
+
 ```
 读取火山引擎 TOS 桶example下对象名为example.txt的文件内容
 ```
 
 ## 可适配平台
+
 方舟，python，cursor
 
 ## 服务开通链接 (整体产品)
@@ -164,18 +164,33 @@ SaaS
 <https://console.volcengine.com/tos>
 
 ## 鉴权方式
+
 火山引擎，从 volcengine 管理控制台获取 volcengine 访问密钥 ID、秘密访问密钥和区域，请在.env文件中设置相关环境变量
 
-## 安装部署  
+### 环境变量
+
+以下环境变量可用于配置MCP服务器:
+
+| 环境变量             | 描述                     | 默认值 |
+|------------------|------------------------|-----|
+| `VOLC_ACCESSKEY` | 火山引擎账号 ACCESS KEY      | -   |
+| `VOLC_SECRETKEY` | 火山引擎账号 SECRET KEY      | -   |
+| `REGION`         | 火山引擎 TOS region        | -   |
+| `TOS_ENDPOINT`   | 火山引擎 TOS Endpoint      | -   |
+| `SECURITY_TOKEN` | 火山引擎 Security Token，可选 | -   |
+| `TOS_BUCKETS`    | 指定访问的 TOS 桶，可选         | -   |
+
+## 安装部署
 
 ### 系统依赖
+
 - 安装 Python 3.10 或者更高版本
-- 安装 uv 
-  - 如果是linux系统 
+- 安装 uv
+    - 如果是linux系统
   ```
   curl -LsSf https://astral.sh/uv/install.sh | sh
   ```
-  - 如果是window系统 
+    - 如果是window系统
   ```
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
@@ -187,13 +202,14 @@ SaaS
   ```bash
   uv build
   ```
-  
+
 ### Using uv (recommended)
 
 When using [`uv`](https://docs.astral.sh/uv/) no specific installation is needed. We will
 use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server-tos*.
 
 #### 本地配置
+
 添加以下配置到你的 mcp settings 文件中
 
 ```json
@@ -213,19 +229,23 @@ use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server
 ```
 
 ## 在不同平台的配置
+
 ### 方舟
+
 #### 体验中心
+
 [示例如下]
+
 1. 查看MCP Server 详情
-在大模型生态广场，选择合适的MCP Server，并查看详情
+   在大模型生态广场，选择合适的MCP Server，并查看详情
 2. 选择MCP Server即将运行的平台
-检查当前MCP Server 已适配的平台，并选择合适的平台
+   检查当前MCP Server 已适配的平台，并选择合适的平台
 3. 查看并对比可用的Tools
-仔细查看可用的Tools的功能描述与所需的输入参数，并尝试运行对应的功能。
+   仔细查看可用的Tools的功能描述与所需的输入参数，并尝试运行对应的功能。
 4. 获取专属的URL或代码示例
-检查账号登录状态与服务开通情况，生成唯一URL
+   检查账号登录状态与服务开通情况，生成唯一URL
 5. 去对应的Client的平台进行使用
-点击快捷跳转按钮，前往方舟平台的体验中心进行对应MCP Server的体验
+   点击快捷跳转按钮，前往方舟平台的体验中心进行对应MCP Server的体验
 
 ## 资源列表 - optional
 
@@ -235,35 +255,37 @@ use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server
 
 ### Cursor
 
-
 ## 部署
+
 [示例如下]
 
 ### UVX
+
 ```json
 {
-    "mcpServers": {
-        "tos-mcp": {
-            "command": "uvx",
-            "args": [
-                "--from",
-                "git+https://github.com/volcengine/mcp-server#subdirectory=server/mcp_server_tos",
-                "mcp-server-tos"
-            ],
-            "env": {
-                "VOLC_ACCESSKEY": "your access-key-id",
-                "VOLC_SECRETKEY": "your access-key-secret",
-                "REGION": "tos region",
-                "TOS_ENDPOINT": "tos endpoint",
-                "SECURITY_TOKEN": "your security token",
-                "TOS_BUCKET": "your specific bucket"
-            }
-        }
+  "mcpServers": {
+    "tos-mcp": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/volcengine/mcp-server#subdirectory=server/mcp_server_tos",
+        "mcp-server-tos"
+      ],
+      "env": {
+        "VOLC_ACCESSKEY": "your access-key-id",
+        "VOLC_SECRETKEY": "your access-key-secret",
+        "REGION": "tos region",
+        "TOS_ENDPOINT": "tos endpoint",
+        "SECURITY_TOKEN": "your security token",
+        "TOS_BUCKET": "your specific bucket"
+      }
     }
+  }
 }
 ```
 
 ## License
+
 volcengine/mcp-server is licensed under the [MIT License](https://github.com/volcengine/mcp-server/blob/main/LICENSE).
 
 

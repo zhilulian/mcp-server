@@ -1,27 +1,13 @@
 # 安全智能体 MCP
 ![产品Logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_0855c1b4f81b28c3aac545acc022f484.svg)
 
-## 版本信息
+安全智能体是火山引擎提供的AI 原生安全运营服务，提供「低成本、高效率、全兼容」的一站式智能安全运营服务，助力企业摆脱多工具割裂困境，实现「机器做流程，人做判断」的新一代安全范式。
 
-    v1.0.0
-
-## 产品描述
-
-### 短描述（建议20个字）
-
-    AI 驱动的安全运营代理，整合火山安全自有工具及第三方生态的一站式智能安全运营服务
-
-### 长描述（建议50字，不超过100字）
-
-    安全智能体是火山引擎提供的AI 原生安全运营服务，提供「低成本、高效率、全兼容」的一站式智能安全运营服务，助力企业摆脱多工具割裂困境，实现「机器做流程，人做判断」的新一代安全范式。
-
-## 分类
-
-    安全
-
-## 标签
-
-    安全
+| 版本 | v0.1.0                   | 
+|----|--------------------------|
+| 描述 | AI 驱动的安全运营代理，整合火山安全自有工具及第三方生态的一站式智能安全运营服务 |
+| 分类 | 安全                       |
+| 标签 | 安全，安全智能体，安全值守 |
 
 ## Tools
 
@@ -346,10 +332,37 @@
 
     火山引擎AKSK鉴权体系
 
+### 环境变量
+
+以下环境变量可用于配置MCP服务器:
+
+| 环境变量             | 描述                     | 默认值 |
+|------------------|------------------------|-----|
+| `VOLC_ACCESSKEY` | 火山引擎账号 ACCESS KEY      | -   |
+| `VOLC_SECRETKEY` | 火山引擎账号 SECRET KEY      | -   |
+
 ## 安装部署
 
-[请在此处提供详细的安装和部署说明，根据您的产品特性选择合适的描述方式。]
-[示例如下]
+### 系统依赖
+
+- 安装 Python 3.10 或者更高版本
+- 安装 uv
+    - 如果是linux系统
+  ```
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+    - 如果是window系统
+  ```
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+- 同步依赖项并更uv.lock:
+  ```bash
+  uv sync
+  ```
+- 构建mcp server:
+  ```bash
+  uv build
+  ```
 
 ### Using uv (recommended)
 
@@ -370,7 +383,7 @@ After installation, you can run it as a script using:
 python -m mcp_server_git
 ```
 
-##在不同平台的配置
+## 在不同平台的配置
 
 ### 方舟
 
@@ -424,7 +437,7 @@ python -m mcp_server_git
 ```json
 {
     "mcpServers": {
-        "tos": {
+        "sec-agent": {
             "command": "uvx",
             "args": [
                 "--from",
@@ -442,4 +455,4 @@ python -m mcp_server_git
 
 ## License
 
-MIT
+volcengine/mcp-server is licensed under the [MIT License](https://github.com/volcengine/mcp-server/blob/main/LICENSE).

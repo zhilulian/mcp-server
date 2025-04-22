@@ -1,28 +1,13 @@
-# MCP Server 产品名称：veFaaS
-
-![logo](https://lf3-beecdn.bytetos.com/obj/ies-fe-bee-upload/bee_prod/biz_950/tos_a6de406dba64a03ae8dc0a60827de011.png)
-
-## 版本信息
-
-v0.0.1
-
-## 产品描述
-
-### 短描述
-
-veFaaS MCP Server 祝你轻松管理函数和触发器生命周期。
-
-### 长描述
+# veFaaS MCP Server
 
 veFaaS MCP Server 提供创建、更新、发布函数和添加触发器的能力。
 
-## 分类
-
-FaaS，函数服务，函数
-
-## 标签
-
-FaaS，函数服务，函数，生命周期
+| | |
+|------|------|
+| 版本 | v0.0.1 |
+| 描述 | veFaaS MCP Server 祝你轻松管理函数和触发器生命周期|
+| 分类 | 容器与中间件 |
+| 标签 | FaaS，函数服务，函数，生命周期 |
 
 ## Tools
 
