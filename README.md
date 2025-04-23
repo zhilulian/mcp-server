@@ -41,7 +41,7 @@
 
 ## MCP Server 列表
 
-MCP Server列表 与**[火山引擎大模型生态广场](https://www.volcengine.com/mcp-marketplace)** 同步。
+MCP Server列表 与 **[火山引擎大模型生态广场](https://www.volcengine.com/mcp-marketplace)** 同步。
 
 ### 计算
 
