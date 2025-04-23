@@ -187,12 +187,12 @@ On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 ```json
 {
     "mcpServers": {
-        "mongo-server-mcp": {
+        "mcp-server-mongodb": {
             "command": "uvx",
             "args": [
             "--from",
             "git+https://github.com/volcengine/mcp-server#subdirectory=server/mcp_server_mongodb",
-            "mcp-server-mognodb"
+            "mcp-server-mongodb"
           ],
             "env": {
                 "VOLC_ACCESSKEY": "your-access-key-id",

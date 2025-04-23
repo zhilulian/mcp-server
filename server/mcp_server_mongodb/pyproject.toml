@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mcp-server-ecs = "mcp_server_mongodb.server:main"
+mcp-server-mongodb = "mcp_server_mongodb.server:main"
 
 [build-system]
 requires = ["hatchling"]
