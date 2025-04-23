@@ -187,7 +187,7 @@ On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 ```json
 {
     "mcpServers": {
-        "las-dataset-mcp": {
+        "mongo-server-mcp": {
             "command": "uvx",
             "args": [
             "--from",
