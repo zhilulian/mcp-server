@@ -242,50 +242,41 @@ def generate_random_name(prefix="mcp", length=8):
     return f"{prefix}-{random_str}"
 
 def init_client(region: str = None, ctx: Context = None):
-    _ctx: Context[ServerSession, object] = ctx
-    raw_request: Request = _ctx.request_context.request
-    auth = None
-    if raw_request:
-        # 从 header 的 authorization 字段读取 base64 编码后的 sts json
-        auth = raw_request.headers.get("authorization", None)
-    if auth is None:
-        # 如果 header 中没有认证信息，可能是 stdio 模式，尝试从环境变量获取
-        auth = os.getenv("authorization", None)
-    if auth is None:
-        # 获取认证信息失败
-        raise ValueError("Missing authorization info.")
+    if "VOLC_ACCESSKEY" not in os.environ or  "VOLC_SECRETKEY" not in os.environ:
+        print("VOLC_ACCESSKEY or VOLC_SECRETKEY not in os.environ")
+        _ctx: Context[ServerSession, object] = ctx
+        raw_request: Request = _ctx.request_context.request
+        auth = None
+        if raw_request:
+            # 从 header 的 authorization 字段读取 base64 编码后的 sts json
+            auth = raw_request.headers.get("authorization", None)
+        if auth is None:
+            # 如果 header 中没有认证信息，可能是 stdio 模式，尝试从环境变量获取
+            auth = os.getenv("authorization", None)
+        if auth is None:
+            # 获取认证信息失败
+            raise ValueError("Missing authorization info.")
 
-    if ' ' in auth:
-        _, base64_data = auth.split(' ', 1)
+        if ' ' in auth:
+            _, base64_data = auth.split(' ', 1)
+        else:
+            base64_data = auth
+
+        try:
+            # 解码 Base64
+            decoded_str = base64.b64decode(base64_data).decode('utf-8')
+            data = json.loads(decoded_str)
+
+            ak = data.get('AccessKeyId')
+            sk = data.get('SecretAccessKey')
+            session_token = data.get('SessionToken')
+
+        except Exception as e:
+            raise ValueError("Decode authorization info error", e)
     else:
-        base64_data = auth
-
-    try:
-        # 解码 Base64
-        decoded_str = base64.b64decode(base64_data).decode('utf-8')
-        data = json.loads(decoded_str)
-
-        # 获取字段
-        current_time = data.get('CurrentTime')
-        expired_time = data.get('ExpiredTime')
-        ak = data.get('AccessKeyId')
-        sk = data.get('SecretAccessKey')
-        session_token = data.get('SessionToken')
-
-    except Exception as e:
-        raise ValueError("Decode authorization info error", e)
-
-    """Set up VeFaaS configuration with credentials from environment variables"""
-    if ak is None:
-        if "VOLC_ACCESSKEY" not in os.environ:
-            raise ValueError("VOLC_ACCESSKEY environment variable is not set")
-    if sk is None:
-        if "VOLC_SECRETKEY" not in os.environ:
-            raise ValueError("VOLC_SECRETKEY environment variable is not set")
-
-    ak = ak if ak is not None else os.environ["VOLC_ACCESSKEY"]
-    sk = sk if sk is not None else os.environ["VOLC_SECRETKEY"]
-    
+        ak = os.environ["VOLC_ACCESSKEY"]
+        sk = os.environ["VOLC_SECRETKEY"]
+        session_token = ""
 
     configuration = volcenginesdkcore.Configuration()
     configuration.ak = ak
