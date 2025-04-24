@@ -610,7 +610,7 @@ OAuth 2.0
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/volcengine/mcp-server#subdirectory=/server/mcp_server_vefaas_function",
+        "git+https://github.com/volcengine/mcp-server#subdirectory=server/mcp_server_vefaas_function",
         "mcp-server-vefaas-function"
       ],
       "env": {
