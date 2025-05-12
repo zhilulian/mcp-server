@@ -1,4 +1,3 @@
-
 # MCP Server 产品名称：证书中心 MCP Server![产品Logo](https://ti.volccdn.com/obj/net-fe/assets/log-colrtrlector.svg)
 
 
@@ -7,15 +6,15 @@ v1
 
 ## 产品描述
 ### 短描述
-基于 MCP 管理证书资源
+通过自然语言驱动管理证书服务
 ### 长描述
-证书中心 官方推出的 MCP Server 提供强大的查询能力，支持通过自然语言便捷地申请以及查询证书，提升了数据访问的直观性与效率。可以与火山引擎云产品MCP 组合，助力构建更智能的业务应用场景。
+证书中心官方推出的 MCP Server 提供强大的证书管理能力，支持通过自然语言便捷地管理证书相关服务，提升证书管理的直观性与效率。可以与火山引擎云产品 MCP 组合，助力构建更智能的业务应用场景。
 
 ## 分类
 企业应用
 
 ## 标签
-域名与网站，SSL证书
+证书，SSL，PCA，数据加密
 
 ## Tools
 本 MCP Server 产品提供以下 Tools (工具/能力):
@@ -32,13 +31,13 @@ v1
  - 详细描述：调用本接口获取SSL证书实例列表。
  - 触发示例：调用 certificate_get_instance_list 获取相关数据
 ### Tool5: certificate_add_organization
- - 详细描述：调用本接口创建一个信息模板。
+ - 详细描述：调用本接口创建一个证书的信息模板。
  - 触发示例：调用 certificate_add_organization 获取相关数据
 ### Tool6: certificate_get_organization
- - 详细描述：调用本接口创建一个信息模板。
+ - 详细描述：调用本接口获取一个证书的信息模板详情。
  - 触发示例：调用 certificate_get_organization 获取相关数据
 ### Tool7: certificate_get_organization_list
- - 详细描述：调用本接口获取已有信息模板列表。
+ - 详细描述：调用本接口获取已有的证书信息模板列表。
  - 触发示例：调用 certificate_get_organization_list 获取相关数据
 ### Tool8: list_tags_for_resources
  - 详细描述：调用本接口查询您的证书中心资源绑定的标签。
