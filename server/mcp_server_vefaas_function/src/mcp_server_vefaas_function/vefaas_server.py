@@ -2,26 +2,20 @@ from __future__ import print_function
 
 import io
 from typing import Union, Optional
-from mcp.server.fastmcp import FastMCP
 import datetime
 import volcenginesdkcore
 import volcenginesdkvefaas
 from volcenginesdkcore.rest import ApiException
 import random
 import string
-import os
 import base64
 import logging
-import zipfile
 from .sign import request, get_authorization_credentials
 import json
-from mcp.server.session import ServerSession
 from mcp.server.fastmcp import Context, FastMCP
-from starlette.requests import Request
 import os
 import subprocess
 import zipfile
-import pyzipper
 from io import BytesIO
 from typing import Tuple
 import requests
@@ -315,16 +309,6 @@ def init_client(region: str = None, ctx: Context = None):
     return volcenginesdkvefaas.VEFAASApi()
 
 
-@mcp.tool(description="""Compresses multiple in-memory files into a single ZIP archive and returns its base64-encoded string.
-Use this when you need to package multiple files and pass them to other interfaces (e.g., function creation or update) in a base64-encoded ZIP format.
-The input should be a dictionary where keys are filenames and values are file contents in either str or bytes. No files are written to disk.""")
-def create_zip_base64(file_dict: dict[str, Union[str, bytes]]) -> str:
-    zip_bytes = build_zip_bytes_for_file_dict(file_dict)
-    zip_base64 = base64.b64encode(zip_bytes).decode("utf-8")
-
-    return zip_base64
-
-
 @mcp.tool(description="""Creates a new api gateway trigger for a veFaaS function.
 Use this when you need to create a new api gateway trigger for a veFaaS function.
 It is recommended that each gateway service is used for only one function.
@@ -537,6 +521,12 @@ def list_routes(upstream_id: str, region: str = None):
     response_body = request("POST", now, {}, {}, ak, sk, token, "ListRoutes", json.dumps(body))
     return response_body
 
+def ensure_executable_permissions(folder_path: str):
+    for root, _, files in os.walk(folder_path):
+        for fname in files:
+            full_path = os.path.join(root, fname)
+            if fname.endswith('.sh') or fname in ('run.sh',):
+                os.chmod(full_path, 0o755)
 
 def zip_and_encode_folder(folder_path: str) -> Tuple[bytes, int, Exception]:
     """
@@ -554,6 +544,7 @@ def zip_and_encode_folder(folder_path: str) -> Tuple[bytes, int, Exception]:
 
     print(f"Zipping folder: {folder_path}")
     try:
+        ensure_executable_permissions(folder_path)
         # Create zip process with explicit arguments
         proc = subprocess.Popen(
             ['zip', '-r', '-q', '-', '.', '-x', '*.git*', '-x', '*.venv*', '-x', '*__pycache__*', '-x', '*.pyc'],
@@ -602,7 +593,7 @@ def python_zip_implementation(folder_path: str) -> bytes:
     """Pure Python zip implementation with permissions support"""
     buffer = BytesIO()
 
-    with pyzipper.AESZipFile(buffer, 'w', compression=pyzipper.ZIP_LZMA) as zipf:
+    with zipfile.ZipFile(buffer, 'w', compression=zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(folder_path):
             for file in files:
                 file_path = os.path.join(root, file)
@@ -612,15 +603,18 @@ def python_zip_implementation(folder_path: str) -> bytes:
                 if any(excl in arcname for excl in ['.git', '.venv', '__pycache__', '.pyc']):
                     continue
 
-                # Get file permissions
-                st = os.stat(file_path)
-                mode = st.st_mode | 0o755  # Add read/exec permissions
-
                 try:
-                    # Add to zip with permissions
-                    zipf.write(file_path, arcname)
-                    zipf.setinfo(arcname, zipfile.ZipInfo.from_file(file_path))
-                    zipf.getinfo(arcname).external_attr = (mode & 0xFFFF) << 16  # Unix attributes
+
+                    st = os.stat(file_path)
+                    dt = datetime.datetime.fromtimestamp(st.st_mtime)
+                    date_time = (dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+
+                    info = zipfile.ZipInfo(arcname)
+                    info.external_attr = (0o755 << 16)  # rwxr-xr-x
+                    info.date_time = date_time
+
+                    with open(file_path, 'rb') as f:
+                        zipf.writestr(info, f.read())
                 except Exception as e:
                     print(f"Warning: Skipping file {arcname} due to error: {str(e)}")
 
