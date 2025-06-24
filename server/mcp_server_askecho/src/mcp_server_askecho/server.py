@@ -13,7 +13,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 config = None
-mcp = FastMCP("AskEcho MCP Server")
+mcp = FastMCP("AskEcho MCP Server", port=int(os.getenv("PORT", "8000")))
 
 
 @mcp.tool()
